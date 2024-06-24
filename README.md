@@ -448,6 +448,10 @@ Frequently asked Java Interview questions
 
     Collections in Java is a unified framework that provides architecture for storing and manipulating a group of objects.
 
+    The `java.util.*` package contains the following classes and interfaces for Collections framework.
+
+    ![Screenshot](images/CollectionsHierarchy.png)
+
     **[⬆ Back to Top](#table-of-contents)**
 
 14. ### What are the differences between arraylist and vector?
