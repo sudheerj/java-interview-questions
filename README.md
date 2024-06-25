@@ -4,19 +4,22 @@ Frequently asked Java Interview questions
 ### Table of Contents
 
 <!-- TOC_START -->
-| No. | Questions                                                                                                                                                     |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | [How does JVM works](#how-does-jvm-works)                                     |
-| 2   | [What are the main features of Java](#what-are-the-main-features-of-Java)                                     |
-| 3   | [What is string constant pool](#what-is-string-constant-pool)                                     |
-| 4   | [Why strings are immutable](#why-strings-are-immutable)                                     |
-| 5   | [What is the difference between StringBuffer and StringBuilder](#what-is-the-difference-between-stringBuffer-and-stringBuilder)                                     |
-| 6   | [What is the importance of hashCode() and equals() methods](#what-is-the-importance-of-hashCode()-and-equals()-methods)                                                                                                       |
-| 7   | [What is the difference between checked and unchecked expceptions](#what-is-the-difference-between-checked-and-unchecked-expceptions)                                     |
-| 8   | [What are wrapper classes](#what-are-wrapper-classes)                                     |
-| 9   | [What is the difference between abstract class and interface](#what-is-the-difference-between-abstract-class-and-interface)                                     |
-| 10   | [What are marker interfaces](#what-are-marker-interfaces)                                     |
-
+| No. | Questions |
+| --- | --------- |
+| 1 | [What are the differences between JVM, JRE and JDK?](#what-are-the-differences-between-jvm-jre-and-jdk) |
+| 2 | [Why Java is platform-independent language](#why-java-is-platform-independent-language) |
+| 3 | [How does JVM works](#how-does-jvm-works) |
+| 4 | [What are the main features of Java](#what-are-the-main-features-of-java) |
+| 5 | [What is string constant pool](#what-is-string-constant-pool) |
+| 6 | [Why strings are immutable](#why-strings-are-immutable) |
+| 7 | [What is the difference between StringBuffer and StringBuilder](#what-is-the-difference-between-stringbuffer-and-stringbuilder) |
+| 8 | [What is the importance of hashCode() and equals() methods](#what-is-the-importance-of-hashcode-and-equals-methods) |
+| 9 | [What is the difference between checked and unchecked expceptions](#what-is-the-difference-between-checked-and-unchecked-expceptions) |
+| 10 | [What are wrapper classes](#what-are-wrapper-classes) |
+| 11 | [What is the difference between abstract class and interface](#what-is-the-difference-between-abstract-class-and-interface) |
+| 12 | [What are marker interfaces](#what-are-marker-interfaces) |
+| 13 | [What are collections in Java?](#what-are-collections-in-java) |
+| 14 | [What are the differences between arraylist and vector?](#what-are-the-differences-between-arraylist-and-vector) |
 <!-- TOC_END -->
 
 <!-- QUESTIONS_START -->
