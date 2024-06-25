@@ -30,6 +30,10 @@ Frequently asked Java Interview questions
 
     **JDK:** Java Development Kit (JDK)  is a software development kit used to develop and execute Java programs. It includes tools for developing, monitoring and debugging java programs, along with JRE to execute those respective programs. 
 
+    The pictorial representation of these three components looks as follows,
+
+     ![Screenshot](images/JVM_JRE_JDK.png)
+
     **[⬆ Back to Top](#table-of-contents)**
 
 2. ### Why Java is platform-independent language
