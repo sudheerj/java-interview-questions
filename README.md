@@ -35,7 +35,7 @@ Frequently asked Java Interview questions
 
     The pictorial representation of these three components looks as follows,
 
-     ![Screenshot](images/JVM_JRE_JDK.png)
+    <img scr="images/JVM_JRE_JDK.png" width="300" height="300" />
 
     **[⬆ Back to Top](#table-of-contents)**
 
@@ -193,6 +193,10 @@ Frequently asked Java Interview questions
         2. Dead code elimination
         3. Null check elimination
         5. Constant folding
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+5. ### What is public static void main?
 
     **[⬆ Back to Top](#table-of-contents)**
 
