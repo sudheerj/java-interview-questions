@@ -201,7 +201,7 @@ Frequently asked Java Interview questions
 
     **[⬆ Back to Top](#table-of-contents)**
 
-5. ### What is string constant pool
+6. ### What is string constant pool
 
     String constant pool is a storage space inside the heap memory area where string literals are stored. It is also known as String pool or String Intern Pool. This is privately maintained by String class and it is empty by default. Whenever you create a new string object, JVM checks for presence of string object in the string pool. If the string value is already present, the same object reference is shared with the variable, else a new string is created in the pool with the variable reference stored in stack area.  
 
