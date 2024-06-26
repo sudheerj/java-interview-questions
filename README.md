@@ -10,16 +10,17 @@ Frequently asked Java Interview questions
 | 2 | [Why Java is platform-independent language](#why-java-is-platform-independent-language) |
 | 3 | [How does JVM works](#how-does-jvm-works) |
 | 4 | [What are the main features of Java](#what-are-the-main-features-of-java) |
-| 5 | [What is string constant pool](#what-is-string-constant-pool) |
-| 6 | [Why strings are immutable](#why-strings-are-immutable) |
-| 7 | [What is the difference between StringBuffer and StringBuilder](#what-is-the-difference-between-stringbuffer-and-stringbuilder) |
-| 8 | [What is the importance of hashCode() and equals() methods](#what-is-the-importance-of-hashcode-and-equals-methods) |
-| 9 | [What is the difference between checked and unchecked expceptions](#what-is-the-difference-between-checked-and-unchecked-expceptions) |
-| 10 | [What are wrapper classes](#what-are-wrapper-classes) |
-| 11 | [What is the difference between abstract class and interface](#what-is-the-difference-between-abstract-class-and-interface) |
-| 12 | [What are marker interfaces](#what-are-marker-interfaces) |
-| 13 | [What are collections in Java?](#what-are-collections-in-java) |
-| 14 | [What are the differences between arraylist and vector?](#what-are-the-differences-between-arraylist-and-vector) |
+| 5 | [What is public static void main?](#what-is-public-static-void-main) |
+| 6 | [What is string constant pool](#what-is-string-constant-pool) |
+| 7 | [Why strings are immutable](#why-strings-are-immutable) |
+| 8 | [What is the difference between StringBuffer and StringBuilder](#what-is-the-difference-between-stringbuffer-and-stringbuilder) |
+| 9 | [What is the importance of hashCode() and equals() methods](#what-is-the-importance-of-hashcode-and-equals-methods) |
+| 10 | [What is the difference between checked and unchecked expceptions](#what-is-the-difference-between-checked-and-unchecked-expceptions) |
+| 11 | [What are wrapper classes](#what-are-wrapper-classes) |
+| 12 | [What is the difference between abstract class and interface](#what-is-the-difference-between-abstract-class-and-interface) |
+| 13 | [What are marker interfaces](#what-are-marker-interfaces) |
+| 14 | [What are collections in Java?](#what-are-collections-in-java) |
+| 15 | [What are the differences between arraylist and vector?](#what-are-the-differences-between-arraylist-and-vector) |
 <!-- TOC_END -->
 
 <!-- QUESTIONS_START -->
@@ -206,13 +207,13 @@ Frequently asked Java Interview questions
 
     **[⬆ Back to Top](#table-of-contents)**
 
-6. ### Why strings are immutable
+7. ### Why strings are immutable
 
     Strings are immutable, that means the contents of string objects can't be modified after their creation. i.e, When you try to alter the string, it creates a new string.  Due to this behavior, the internal state of a string remains the same throughout the execution of the program. This characteristic of immutability helps with the benefits of caching, security, synchronization, and performance.
     
     **[⬆ Back to Top](#table-of-contents)**
 
-7. ### What is the difference between StringBuffer and StringBuilder
+8. ### What is the difference between StringBuffer and StringBuilder
 
     String is an immutable class to represent sequence of characters. Java also provided mutable version of String class through StringBuffer and StringBuilder. Even though both these classes are mutable, there are many differences between StringBuffer and StringBuilder.
    
@@ -226,7 +227,7 @@ Frequently asked Java Interview questions
     
     **[⬆ Back to Top](#table-of-contents)**
 
-8. ### What is the importance of hashCode() and equals() methods
+9. ### What is the importance of hashCode() and equals() methods
 
     Since both `equals()` and `hashCode()` methods are available in Object class(i.e, Java.lang.object), every java class gets the default implementation of equals and hashCode methods. These methods work together to verify if two objects have the same value or not.
 
@@ -258,7 +259,7 @@ Frequently asked Java Interview questions
 
     **[⬆ Back to Top](#table-of-contents)**
 
-9. ### What is the difference between checked and unchecked expceptions
+10. ### What is the difference between checked and unchecked expceptions
 
     An exception is an event that interrupts the normal flow the program execution. There are two types of exceptions,
        1. Checked exceptions
@@ -329,7 +330,7 @@ Frequently asked Java Interview questions
 
     **[⬆ Back to Top](#table-of-contents)**
 
-10. ### What are wrapper classes
+11. ### What are wrapper classes
 
     Wrapper classes provides the mechanism to convert primitive types into object types and vice versa. Since Java is an object-oriented programming language, and many APIs and libraries in Java require objects instead primitive types. For example, data structures in collection framework, utility classes from `java.utils.*`,cloning process, Serialization, Synchronization etc require object type.
 
@@ -383,7 +384,7 @@ Frequently asked Java Interview questions
 
     **[⬆ Back to Top](#table-of-contents)**
 
-11. ### What is the difference between abstract class and interface
+12. ### What is the difference between abstract class and interface
 
     Both Abstract class and interface are used to define contracts in object-oriented programming. But there are some key differences between them as shown below,
 
@@ -399,7 +400,7 @@ Frequently asked Java Interview questions
 
     **[⬆ Back to Top](#table-of-contents)**
 
-12. ### What are marker interfaces
+13. ### What are marker interfaces
 
      Marker interfaces are interfaces that don't have any fields, methods, or constants inside of it. They are also known as empty interfaces or tag interfaces. Examples of marker interface are Serializable, Cloneable and Remote interface. The purpose of marker interfaces are to provide run-time type information about an object to JVM and Compiler. They are mainly used in  API development and in frameworks like Spring to provide additional information to the class.
 
@@ -455,7 +456,7 @@ Frequently asked Java Interview questions
 
     **[⬆ Back to Top](#table-of-contents)**
 
-13. ### What are collections in Java?
+14. ### What are collections in Java?
 
     Collections in Java is a unified framework that provides architecture for storing and manipulating a group of objects.
 
@@ -465,7 +466,7 @@ Frequently asked Java Interview questions
 
     **[⬆ Back to Top](#table-of-contents)**
 
-14. ### What are the differences between arraylist and vector?
+15. ### What are the differences between arraylist and vector?
 
     Both Vector and ArrayList use dynamically resizable array as their internal data structure and implement the List interface. But there are couple of differences between them as listed below,
 
