@@ -199,6 +199,30 @@ Frequently asked Java Interview questions
 
 5. ### What is public static void main?
 
+   The `main()` method acts as a starting point for JVM to start the execution of a Java program. i.e, JVM doesn't execute the code if there is no main method in the code. The signature of main method should follow specific pattern for the JVM to recognize it as a entry point. Since it is an important method of Java, you need to have proper understanding of its signature in detail.
+
+   The signature of main method for displaying "Hello World" looks like below,
+
+   ```java
+   public static void main(String[] args) {
+        System.out.println("Hello World");
+   }
+   ```
+   When `java.exe` parses the command line, it generates a new String array and invokes the main() method. Let's describe each word in the statement,
+
+   1. Public: The public access modifier is accessible everywhere and it enables JVM can invoke it from outside the class as it is not present in the current class. Otherwise, you will receive an error saying "Main method not found in class".
+
+   2. Static: This static keyword is used to make `main()` method as a class related method so that JVM can invoke it without instantiating the class. It is also helpful to avoid unnecessary memory usage with object just for calling main method.
+
+   3. Void: The void keyword is used to specify that a method doesn’t return anything. Since main() method doesn't return anything, its return type is void. Once the main method terminates, the java program terminates as well.
+
+   4. Main: The "main" method name is an identifier that the JVM looks for as the starting point of the Java program.
+
+   5. String[] args: This is an array of strings which stores arguments passed by command line while starting a program.
+
+   **Note:** You can create any number of main methods through overloading features. i.e, Mulitple main methods can be created with different parameters.
+   
+
     **[⬆ Back to Top](#table-of-contents)**
 
 5. ### What is string constant pool
