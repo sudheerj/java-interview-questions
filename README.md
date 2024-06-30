@@ -21,6 +21,7 @@ Frequently asked Java Interview questions
 | 13 | [What are marker interfaces](#what-are-marker-interfaces) |
 | 14 | [What are collections in Java?](#what-are-collections-in-java) |
 | 15 | [What are the differences between arraylist and vector?](#what-are-the-differences-between-arraylist-and-vector) |
+| 16 | [What is finalize method? How do you override it?](#what-is-finalize-method-how-do-you-override-it) |
 <!-- TOC_END -->
 
 <!-- QUESTIONS_START -->
