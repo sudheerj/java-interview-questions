@@ -504,4 +504,51 @@ Frequently asked Java Interview questions
 
     **[⬆ Back to Top](#table-of-contents)**
 
+16. ### What is finalize method? How do you override it?
+    The `finalize()` is a method from the Object class used to perform cleanup activity before destroying any object. The method is invoked by garbage collector for cleanup activities like closing the resources associated with an object(database connection or network connection). This process is known as **finalization** and it helps JVM for in-memory optimization.
+
+    It is a protected method of Object class with syntax as shown below,
+    ```java
+    protected void finalize() throws Throwable{}
+    ```
+
+    Since Object is the superclass of all java classes, the finalize method is available for every java class. That's why garbage collector can call the `finalize()` method on any java object.
+
+    This method has empty implementation inside Object class. If your class has clean-up activities, you need to override this method. The following example demonstrate how to override the finalize method and call the method explicitly.
+
+    ```java
+    import java.lang.*;
+
+    public class finalizeDemo {
+
+        protected void finalize() throws Throwable {
+                try {
+
+                    System.out.println("Inside finalize() method of finalizeDemo class");
+                }
+                catch (Throwable e) {
+
+                    throw e;
+                }
+                finally {
+
+                    System.out.println("Calling finalize method of the Object(super) class");
+
+                    super.finalize();
+                }
+        }
+
+        public static void main(String[] args) throws Throwable {
+            finalizeDemo fd = new finalizeDemo();
+            fd.finalize();
+        }
+    }
+    ```
+
+    The statement `super.finalize()` is called inside finally block to ensure its execution even in the case of exceptions.
+
+    **Note:** The garbage collector invokes the `finalize()` method only once on any object.
+
+    **[⬆ Back to Top](#table-of-contents)**
+
 <!-- QUESTIONS_END -->
