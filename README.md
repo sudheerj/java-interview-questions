@@ -17,11 +17,12 @@ Frequently asked Java Interview questions
 | 9 | [What is the importance of hashCode() and equals() methods](#what-is-the-importance-of-hashcode-and-equals-methods) |
 | 10 | [What is the difference between checked and unchecked expceptions](#what-is-the-difference-between-checked-and-unchecked-expceptions) |
 | 11 | [What are wrapper classes](#what-are-wrapper-classes) |
-| 12 | [What is the difference between abstract class and interface](#what-is-the-difference-between-abstract-class-and-interface) |
-| 13 | [What are marker interfaces](#what-are-marker-interfaces) |
-| 14 | [What are collections in Java?](#what-are-collections-in-java) |
-| 15 | [What are the differences between arraylist and vector?](#what-are-the-differences-between-arraylist-and-vector) |
-| 16 | [What is finalize method? How do you override it?](#what-is-finalize-method-how-do-you-override-it) |
+| 12 | [Why java is not pure object oriented language](#why-java-is-not-pure-object-oriented-language) |
+| 13 | [What is the difference between abstract class and interface](#what-is-the-difference-between-abstract-class-and-interface) |
+| 14 | [What are marker interfaces](#what-are-marker-interfaces) |
+| 15 | [What are collections in Java?](#what-are-collections-in-java) |
+| 16 | [What are the differences between arraylist and vector?](#what-are-the-differences-between-arraylist-and-vector) |
+| 17 | [What is finalize method? How do you override it?](#what-is-finalize-method-how-do-you-override-it) |
 <!-- TOC_END -->
 
 <!-- QUESTIONS_START -->
