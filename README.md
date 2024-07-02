@@ -408,7 +408,17 @@ Frequently asked Java Interview questions
 
     **[⬆ Back to Top](#table-of-contents)**
 
-12. ### What is the difference between abstract class and interface
+12. ### Why java is not pure object oriented language
+
+    Java is not a fully object-oriented programming language because of two main reasons.
+
+    1. It supports primitive data types like int, byte, long, short, etc., which are not objects. Even though you can convert primitive data types to objects using wrapper classes, it does not make Java a pure object-oriented language. Because these objects are not originally associated with Java and internally it uses operations like Unboxing and Autoboxing. That means even you use wrapper classes, under the hood it uses primitive types for the calculation.
+
+    2. Both static variables and methods can be accessed without using an object. Instead, they are associated with classes, which is against to the object-oriented principle where everything should be an object.
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+13. ### What is the difference between abstract class and interface
 
     Both Abstract class and interface are used to define contracts in object-oriented programming. But there are some key differences between them as shown below,
 
@@ -424,7 +434,7 @@ Frequently asked Java Interview questions
 
     **[⬆ Back to Top](#table-of-contents)**
 
-13. ### What are marker interfaces
+14. ### What are marker interfaces
 
      Marker interfaces are interfaces that don't have any fields, methods, or constants inside of it. They are also known as empty interfaces or tag interfaces. Examples of marker interface are Serializable, Cloneable and Remote interface. The purpose of marker interfaces are to provide run-time type information about an object to JVM and Compiler. They are mainly used in  API development and in frameworks like Spring to provide additional information to the class.
 
@@ -480,7 +490,7 @@ Frequently asked Java Interview questions
 
     **[⬆ Back to Top](#table-of-contents)**
 
-14. ### What are collections in Java?
+15. ### What are collections in Java?
 
     Collections in Java is a unified framework that provides architecture for storing and manipulating a group of objects.
 
@@ -490,7 +500,7 @@ Frequently asked Java Interview questions
 
     **[⬆ Back to Top](#table-of-contents)**
 
-15. ### What are the differences between arraylist and vector?
+16. ### What are the differences between arraylist and vector?
 
     Both Vector and ArrayList use dynamically resizable array as their internal data structure and implement the List interface. But there are couple of differences between them as listed below,
 
@@ -504,7 +514,7 @@ Frequently asked Java Interview questions
 
     **[⬆ Back to Top](#table-of-contents)**
 
-16. ### What is finalize method? How do you override it?
+17. ### What is finalize method? How do you override it?
     The `finalize()` is a method from the Object class used to perform cleanup activity before destroying any object. The method is invoked by garbage collector for cleanup activities like closing the resources associated with an object(database connection or network connection). This process is known as **finalization** and it helps JVM for in-memory optimization.
 
     It is a protected method of Object class with syntax as shown below,
