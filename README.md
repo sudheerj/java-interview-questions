@@ -5,27 +5,26 @@ Frequently asked Java Interview questions
 ### Table of Contents
 
 <!-- TOC_START -->
-
-| No. | Questions                                                                                                                             |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | [What are the differences between JVM, JRE and JDK?](#what-are-the-differences-between-jvm-jre-and-jdk)                               |
-| 2   | [Why Java is platform-independent language](#why-java-is-platform-independent-language)                                               |
-| 3   | [How does JVM works](#how-does-jvm-works)                                                                                             |
-| 4   | [What are the main features of Java](#what-are-the-main-features-of-java)                                                             |
-| 5   | [What is public static void main?](#what-is-public-static-void-main)                                                                  |
-| 6   | [What is string constant pool](#what-is-string-constant-pool)                                                                         |
-| 7   | [Why strings are immutable](#why-strings-are-immutable)                                                                               |
-| 8   | [What is the difference between StringBuffer and StringBuilder](#what-is-the-difference-between-stringbuffer-and-stringbuilder)       |
-| 9   | [What is the importance of hashCode() and equals() methods](#what-is-the-importance-of-hashcode-and-equals-methods)                   |
-| 10  | [What is the difference between checked and unchecked expceptions](#what-is-the-difference-between-checked-and-unchecked-expceptions) |
-| 11  | [What are wrapper classes](#what-are-wrapper-classes)                                                                                 |
-| 12  | [Why java is not pure object oriented language](#why-java-is-not-pure-object-oriented-language)                                       |
-| 13  | [What is the difference between abstract class and interface](#what-is-the-difference-between-abstract-class-and-interface)           |
-| 14  | [What are marker interfaces](#what-are-marker-interfaces)                                                                             |
-| 15  | [What are collections in Java?](#what-are-collections-in-java)                                                                        |
-| 16  | [What are the differences between arraylist and vector?](#what-are-the-differences-between-arraylist-and-vector)                      |
-| 17  | [What is finalize method? How do you override it?](#what-is-finalize-method-how-do-you-override-it)                                   |
-
+| No. | Questions |
+| --- | --------- |
+| 1 | [What are the differences between JVM, JRE and JDK?](#what-are-the-differences-between-jvm-jre-and-jdk) |
+| 2 | [Why Java is platform-independent language](#why-java-is-platform-independent-language) |
+| 3 | [How does JVM works](#how-does-jvm-works) |
+| 4 | [What are the main features of Java](#what-are-the-main-features-of-java) |
+| 5 | [What is public static void main?](#what-is-public-static-void-main) |
+| 6 | [What is string constant pool](#what-is-string-constant-pool) |
+| 7 | [Why strings are immutable](#why-strings-are-immutable) |
+| 8 | [What is the difference between StringBuffer and StringBuilder](#what-is-the-difference-between-stringbuffer-and-stringbuilder) |
+| 9 | [What is the importance of hashCode() and equals() methods](#what-is-the-importance-of-hashcode-and-equals-methods) |
+| 10 | [What is the difference between checked and unchecked expceptions](#what-is-the-difference-between-checked-and-unchecked-expceptions) |
+| 11 | [What are wrapper classes](#what-are-wrapper-classes) |
+| 12 | [Why java is not pure object oriented language](#why-java-is-not-pure-object-oriented-language) |
+| 13 | [What is the difference between abstract class and interface](#what-is-the-difference-between-abstract-class-and-interface) |
+| 14 | [What are marker interfaces](#what-are-marker-interfaces) |
+| 15 | [What are collections in Java?](#what-are-collections-in-java) |
+| 16 | [What are the differences between arraylist and vector?](#what-are-the-differences-between-arraylist-and-vector) |
+| 17 | [What is finalize method? How do you override it?](#what-is-finalize-method-how-do-you-override-it) |
+| 18 | [What Is the Difference Between the Comparable and Comparator Interfaces](#what-is-the-difference-between-the-comparable-and-comparator-interfaces) |
 <!-- TOC_END -->
 
 <!-- QUESTIONS_START -->
