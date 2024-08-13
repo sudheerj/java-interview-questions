@@ -25,7 +25,7 @@ Frequently asked Java Interview questions
 | 16 | [What are the differences between arraylist and vector?](#what-are-the-differences-between-arraylist-and-vector) |
 | 17 | [What is finalize method? How do you override it?](#what-is-finalize-method-how-do-you-override-it) |
 | 18 | [What Is the Difference Between the Comparable and Comparator Interfaces](#what-is-the-difference-between-the-comparable-and-comparator-interfaces) |
-
+| 19 | [What Is an inner class](#what-is-an-inner-class) |
 <!-- TOC_END -->
 
 <!-- QUESTIONS_START -->
@@ -679,7 +679,7 @@ Frequently asked Java Interview questions
 
     **[⬆ Back to Top](#table-of-contents)**
 
- 19. ### What Is an inner class
+19. ### What Is an inner class
 
      **[⬆ Back to Top](#table-of-contents)**
 
