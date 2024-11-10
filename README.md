@@ -375,7 +375,7 @@ Frequently asked Java Interview questions
     | double              | Double        |
     | long                | Long          |
     | boolean             | Boolean       |
-    | char                | Char          |
+    | char                | Character     |
 
     You can use `.valueOf` methods from wrapper classes to convert primitive to object type, and the same way wrapper class methods like `intValue`, `doubleValue` etc used to convert wrapper class to primitive type. But this manual process can be automated.
 
