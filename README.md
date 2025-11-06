@@ -27,9 +27,12 @@ Frequently asked Java Interview questions
 | 18 | [What Is the Difference Between the Comparable and Comparator Interfaces](#what-is-the-difference-between-the-comparable-and-comparator-interfaces) |
 | 19 | [What Is an inner class](#what-is-an-inner-class) |
 | 20 | [What is the difference between final, finally, and finalize() in Java?](#what-is-the-difference-between-final-finally-and-finalize-in-java) |
+<<<<<<< HEAD
 | 21 | [What is the purpose of the super keyword in Java](#what-is-the-purpose-of-the-super-keyword-in-java) |
 
 
+=======
+>>>>>>> upstream/main
 <!-- TOC_END -->
 
 <!-- QUESTIONS_START -->
