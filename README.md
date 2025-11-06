@@ -26,6 +26,8 @@ Frequently asked Java Interview questions
 | 17 | [What is finalize method? How do you override it?](#what-is-finalize-method-how-do-you-override-it) |
 | 18 | [What Is the Difference Between the Comparable and Comparator Interfaces](#what-is-the-difference-between-the-comparable-and-comparator-interfaces) |
 | 19 | [What Is an inner class](#what-is-an-inner-class) |
+| 20 | [What is the difference between final, finally, and finalize() in Java?](#what-is-the-difference-between-final-finally-and-finalize-in-java) |
+
 <!-- TOC_END -->
 
 <!-- QUESTIONS_START -->
@@ -682,5 +684,44 @@ Frequently asked Java Interview questions
 19. ### What Is an inner class
 
      **[⬆ Back to Top](#table-of-contents)**
+
+20. ### What is the difference between final, finally, and finalize() in Java?
+
+   The terms `final`, `finally`, and `finalize()` in Java look similar but serve completely different purposes.
+
+   1. **final** → It is a **modifier** used for variables, methods, and classes.  
+      - A `final` variable cannot be reassigned once initialized.  
+      - A `final` method cannot be overridden in subclasses.  
+      - A `final` class cannot be extended.  
+
+   2. **finally** → It is a **block** used in **exception handling** to execute important code such as closing files, releasing connections, etc.  
+      - The `finally` block executes **regardless** of whether an exception occurs or not.  
+
+   3. **finalize()** → It is a **method** defined in the `Object` class that the **Garbage Collector** calls before destroying an object.  
+      - It is rarely used now because garbage collection timing is unpredictable.
+
+   **Example:**
+
+   ```java
+   public class FinalExample {
+       final int VALUE = 100;
+
+       public final void display() {
+           System.out.println("Final method");
+       }
+
+       public static void main(String[] args) {
+           try {
+               System.out.println("Inside try block");
+           } finally {
+               System.out.println("Inside finally block");
+           }
+       }
+
+       @Override
+       protected void finalize() throws Throwable {
+           System.out.println("Finalize method called");
+       }
+   }
 
 <!-- QUESTIONS_END -->
