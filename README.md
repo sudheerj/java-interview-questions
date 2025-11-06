@@ -27,6 +27,12 @@ Frequently asked Java Interview questions
 | 18 | [What Is the Difference Between the Comparable and Comparator Interfaces](#what-is-the-difference-between-the-comparable-and-comparator-interfaces) |
 | 19 | [What Is an inner class](#what-is-an-inner-class) |
 | 20 | [What is the difference between final, finally, and finalize() in Java?](#what-is-the-difference-between-final-finally-and-finalize-in-java) |
+<<<<<<< HEAD
+| 21 | [What is the purpose of the super keyword in Java](#what-is-the-purpose-of-the-super-keyword-in-java) |
+
+
+=======
+>>>>>>> upstream/main
 <!-- TOC_END -->
 
 <!-- QUESTIONS_START -->
@@ -722,5 +728,50 @@ Frequently asked Java Interview questions
            System.out.println("Finalize method called");
        }
    }
+
+21. ### What is the purpose of the super keyword in Java
+
+    The `super` keyword in Java is used to refer to the immediate parent class object. It helps a subclass access or call properties, methods, and constructors of its parent class.
+
+    | Use Case | Description |
+    | --------- | ----------- |
+    | Access parent variables | When a child class has a variable with the same name as its parent class, `super` helps access the parent version. |
+    | Call parent methods | It is used to call the parent class method that has been overridden in the subclass. |
+    | Call parent constructor | It can be used inside a subclass constructor to invoke the parent class constructor. |
+
+    **Example:**
+    ```java
+    class Animal {
+        String name = "Animal";
+        void display() {
+            System.out.println("This is an animal");
+        }
+    }
+
+    class Dog extends Animal {
+        String name = "Dog";
+        void display() {
+            System.out.println("This is a dog");
+            System.out.println("Parent name: " + super.name); // Access parent variable
+            super.display(); // Call parent method
+        }
+    }
+
+    public class Main {
+        public static void main(String[] args) {
+            Dog d = new Dog();
+            d.display();
+        }
+    }
+    ```
+
+    **Output:**
+    ```
+    This is a dog
+    Parent name: Animal
+    This is an animal
+    ```
+
+    **[⬆ Back to Top](#table-of-contents)**
 
 <!-- QUESTIONS_END -->
