@@ -28,46 +28,6 @@ Frequently asked Java Interview questions
 | 19 | [What Is an inner class](#what-is-an-inner-class) |
 | 20 | [What is the difference between final, finally, and finalize() in Java?](#what-is-the-difference-between-final-finally-and-finalize-in-java) |
 | 21 | [What is the difference between '==' and equals() method?](#what-is-the-difference-between--and-equals-method) |
-| 22 | [What is method overloading and method overriding?](#what-is-method-overloading-and-method-overriding) |
-| 23 | [What is the difference between HashMap and Hashtable?](#what-is-the-difference-between-hashmap-and-hashtable) |
-| 24 | [What is the difference between ArrayList and LinkedList?](#what-is-the-difference-between-arraylist-and-linkedlist) |
-| 25 | [What is Java Reflection API?](#what-is-java-reflection-api) |
-| 26 | [What are the different types of memory areas allocated by JVM?](#what-are-the-different-types-of-memory-areas-allocated-by-jvm) |
-| 27 | [What is the difference between throw and throws?](#what-is-the-difference-between-throw-and-throws) |
-| 28 | [What is a singleton class and how to create one?](#what-is-a-singleton-class-and-how-to-create-one) |
-| 29 | [What are Java 8 Stream API features?](#what-are-java-8-stream-api-features) |
-| 30 | [What is the difference between fail-fast and fail-safe iterators?](#what-is-the-difference-between-fail-fast-and-fail-safe-iterators) |
-| 31 | [What is the difference between process and thread?](#what-is-the-difference-between-process-and-thread) |
-| 32 | [What are the different ways to create a thread in Java?](#what-are-the-different-ways-to-create-a-thread-in-java) |
-| 33 | [What is synchronization in Java?](#what-is-synchronization-in-java) |
-| 34 | [What is deadlock and how to avoid it?](#what-is-deadlock-and-how-to-avoid-it) |
-| 35 | [What is the volatile keyword in Java?](#what-is-the-volatile-keyword-in-java) |
-| 36 | [What is the transient keyword in Java?](#what-is-the-transient-keyword-in-java) |
-| 37 | [What is serialization and deserialization?](#what-is-serialization-and-deserialization) |
-| 38 | [What are functional interfaces in Java?](#what-are-functional-interfaces-in-java) |
-| 39 | [What are lambda expressions in Java?](#what-are-lambda-expressions-in-java) |
-| 40 | [What is Optional class in Java 8?](#what-is-optional-class-in-java-8) |
-| 41 | [What is the difference between Collection and Collections?](#what-is-the-difference-between-collection-and-collections) |
-| 42 | [What is the difference between Set and List?](#what-is-the-difference-between-set-and-list) |
-| 43 | [What is the difference between HashSet and TreeSet?](#what-is-the-difference-between-hashset-and-treeset) |
-| 44 | [What is the diamond problem in Java?](#what-is-the-diamond-problem-in-java) |
-| 45 | [What is dependency injection?](#what-is-dependency-injection) |
-| 46 | [What is the difference between shallow copy and deep copy?](#what-is-the-difference-between-shallow-copy-and-deep-copy) |
-| 47 | [What are design patterns in Java?](#what-are-design-patterns-in-java) |
-| 48 | [What is the factory design pattern?](#what-is-the-factory-design-pattern) |
-| 49 | [What is the builder design pattern?](#what-is-the-builder-design-pattern) |
-| 50 | [What is the difference between Heap and Stack memory?](#what-is-the-difference-between-heap-and-stack-memory) |
-| 51 | [What is garbage collection in Java?](#what-is-garbage-collection-in-java) |
-| 52 | [What are the different types of garbage collectors in Java?](#what-are-the-different-types-of-garbage-collectors-in-java) |
-| 53 | [What is the difference between wait() and sleep() methods?](#what-is-the-difference-between-wait-and-sleep-methods) |
-| 54 | [What is the difference between notify() and notifyAll()?](#what-is-the-difference-between-notify-and-notifyall) |
-| 55 | [What is an immutable class and how to create one?](#what-is-an-immutable-class-and-how-to-create-one) |
-| 56 | [What is the difference between String, StringBuilder, and StringBuffer?](#what-is-the-difference-between-string-stringbuilder-and-stringbuffer) |
-| 57 | [What is the difference between static and instance variables?](#what-is-the-difference-between-static-and-instance-variables) |
-| 58 | [What is the purpose of the super keyword?](#what-is-the-purpose-of-the-super-keyword) |
-| 59 | [What is the purpose of the this keyword?](#what-is-the-purpose-of-the-this-keyword) |
-| 60 | [What are generics in Java?](#what-are-generics-in-java) |
-| 61 | [What is type erasure in Java generics?](#what-is-type-erasure-in-java-generics) |
 <!-- TOC_END -->
 
 <!-- QUESTIONS_START -->
