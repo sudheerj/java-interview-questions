@@ -231,7 +231,7 @@ Frequently asked Java Interview questions
 
 6. ### What is string constant pool
 
-   String constant pool is a storage space inside the heap memory area where string literals are stored. It is also known as String pool or String Intern Pool. This is privately maintained by String class and it is empty by default. Whenever you create a new string object, JVM checks for presence of string object in the string pool. If the string value is already present, the same object reference is shared with the variable, else a new string is created in the pool with the variable reference stored in stack area.
+   String constant pool is a special storage space inside the heap memory area where string literals are stored. It is also known as **String pool** or **String Intern Pool**. This is privately maintained by String class and it is empty by default. Whenever you create a new string object, JVM checks for presence of string object in the string pool. If the string value is already present, the same object reference is shared with the variable, else a new string is created in the pool with the variable reference stored in stack area.
 
    **[⬆ Back to Top](#table-of-contents)**
 
@@ -680,6 +680,15 @@ Frequently asked Java Interview questions
     **[⬆ Back to Top](#table-of-contents)**
 
 19. ### What Is an inner class
+
+     **[⬆ Back to Top](#table-of-contents)**
+
+20. ### What is the difference between '==' and equals() method?
+    
+    Both **==** and **.equals()** methods are used to compare objects, but they work in different ways:
+
+    1. == (Reference comparison)
+    2. .equals()(Content comparison)
 
      **[⬆ Back to Top](#table-of-contents)**
 
