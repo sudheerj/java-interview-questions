@@ -847,8 +847,1352 @@ Frequently asked Java Interview questions
     
     Both **==** and **.equals()** methods are used to compare objects, but they work in different ways:
 
-     1. == (Reference comparison)
-     2. .equals()(Content comparison)
+    1. **== (Reference comparison):** The `==` operator compares the memory addresses (references) of two objects. It returns `true` if both references point to the same object in memory.
+
+    2. **.equals() (Content comparison):** The `.equals()` method compares the actual content or values of two objects. By default, it behaves like `==`, but it can be overridden to provide custom comparison logic.
+
+    ```java
+    public class ComparisonExample {
+        public static void main(String[] args) {
+            String s1 = new String("Hello");
+            String s2 = new String("Hello");
+            String s3 = s1;
+            
+            // == compares references
+            System.out.println(s1 == s2);      // false (different objects)
+            System.out.println(s1 == s3);      // true (same reference)
+            
+            // equals() compares content
+            System.out.println(s1.equals(s2)); // true (same content)
+            System.out.println(s1.equals(s3)); // true (same content)
+        }
+    }
+    ```
+
+    | == Operator | equals() Method |
+    |-------------|-----------------|
+    | Compares object references | Compares object content |
+    | Cannot be overridden | Can be overridden |
+    | Works with primitives and objects | Works only with objects |
+    | Returns true if same memory location | Returns true if content is same |
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+22. ### What is method overloading and method overriding?
+
+    Method overloading and method overriding are two important concepts in Java that enable polymorphism.
+
+    **Method Overloading (Compile-time Polymorphism):**
+    Method overloading occurs when multiple methods in the same class have the same name but different parameters (different number, type, or order of parameters). The return type can be the same or different.
+
+    ```java
+    class Calculator {
+        // Method with two int parameters
+        int add(int a, int b) {
+            return a + b;
+        }
+        
+        // Overloaded method with three int parameters
+        int add(int a, int b, int c) {
+            return a + b + c;
+        }
+        
+        // Overloaded method with double parameters
+        double add(double a, double b) {
+            return a + b;
+        }
+    }
+    ```
+
+    **Method Overriding (Runtime Polymorphism):**
+    Method overriding occurs when a subclass provides a specific implementation of a method that is already defined in its parent class. The method must have the same name, return type, and parameters.
+
+    ```java
+    class Animal {
+        void sound() {
+            System.out.println("Animal makes a sound");
+        }
+    }
+    
+    class Dog extends Animal {
+        @Override
+        void sound() {
+            System.out.println("Dog barks");
+        }
+    }
+    
+    class Cat extends Animal {
+        @Override
+        void sound() {
+            System.out.println("Cat meows");
+        }
+    }
+    ```
+
+    | Method Overloading | Method Overriding |
+    |--------------------|-------------------|
+    | Same method name, different parameters | Same method name, same parameters |
+    | Occurs within the same class | Occurs between parent and child class |
+    | Compile-time polymorphism | Runtime polymorphism |
+    | Return type can be different | Return type must be same or covariant |
+    | Access modifier can be any | Cannot reduce access modifier |
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+23. ### What is the difference between HashMap and Hashtable?
+
+    Both HashMap and Hashtable are used to store key-value pairs in Java, but they have several important differences:
+
+    | HashMap | Hashtable |
+    |---------|-----------|
+    | Not synchronized (not thread-safe) | Synchronized (thread-safe) |
+    | Allows one null key and multiple null values | Does not allow null keys or values |
+    | Introduced in Java 1.2 | Legacy class from Java 1.0 |
+    | Faster due to no synchronization | Slower due to synchronization overhead |
+    | Iterator is fail-fast | Enumerator is not fail-fast |
+    | Extends AbstractMap class | Extends Dictionary class |
+    | Preferred for single-threaded applications | Can be used in multi-threaded applications |
+
+    ```java
+    import java.util.*;
+
+    public class MapComparison {
+        public static void main(String[] args) {
+            // HashMap example
+            HashMap<String, Integer> hashMap = new HashMap<>();
+            hashMap.put("One", 1);
+            hashMap.put(null, 0);        // Allows null key
+            hashMap.put("Two", null);    // Allows null value
+            
+            // Hashtable example
+            Hashtable<String, Integer> hashtable = new Hashtable<>();
+            hashtable.put("One", 1);
+            // hashtable.put(null, 0);   // Throws NullPointerException
+            // hashtable.put("Two", null); // Throws NullPointerException
+        }
+    }
+    ```
+
+    **Note:** For thread-safe operations, prefer `ConcurrentHashMap` over `Hashtable` as it provides better performance through segment-level locking.
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+24. ### What is the difference between ArrayList and LinkedList?
+
+    Both ArrayList and LinkedList implement the List interface but differ in their internal implementation and performance characteristics.
+
+    | ArrayList | LinkedList |
+    |-----------|------------|
+    | Uses dynamic array internally | Uses doubly linked list internally |
+    | Better for storing and accessing data (O(1) for get) | Better for manipulating data (O(1) for add/remove at ends) |
+    | Slower manipulation as shifting is required | Faster manipulation, no shifting needed |
+    | Implements only List interface | Implements List and Deque interfaces |
+    | More memory efficient | More memory overhead (stores prev/next references) |
+    | Good for random access | Good for sequential access |
+
+    ```java
+    import java.util.*;
+
+    public class ListComparison {
+        public static void main(String[] args) {
+            // ArrayList - better for random access
+            ArrayList<String> arrayList = new ArrayList<>();
+            arrayList.add("A");
+            arrayList.add("B");
+            arrayList.get(0);  // O(1) - fast random access
+            
+            // LinkedList - better for frequent insertions/deletions
+            LinkedList<String> linkedList = new LinkedList<>();
+            linkedList.add("A");
+            linkedList.addFirst("B");  // O(1) - fast insertion at beginning
+            linkedList.removeLast();   // O(1) - fast removal at end
+        }
+    }
+    ```
+
+    **When to use:**
+    - Use **ArrayList** when you need frequent access to elements by index
+    - Use **LinkedList** when you need frequent insertions/deletions, especially at the beginning or middle of the list
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+25. ### What is Java Reflection API?
+
+    Java Reflection API is a powerful feature that allows programs to examine and modify the behavior of classes, interfaces, methods, and fields at runtime. It is part of the `java.lang.reflect` package.
+
+    **Key capabilities of Reflection:**
+    1. Examine class properties at runtime
+    2. Create objects dynamically
+    3. Invoke methods at runtime
+    4. Access and modify private fields
+    5. Get information about constructors, methods, and fields
+
+    ```java
+    import java.lang.reflect.*;
+
+    class Person {
+        private String name;
+        public int age;
+        
+        public Person() {}
+        
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+        
+        private void privateMethod() {
+            System.out.println("Private method called");
+        }
+        
+        public void display() {
+            System.out.println("Name: " + name + ", Age: " + age);
+        }
+    }
+
+    public class ReflectionDemo {
+        public static void main(String[] args) throws Exception {
+            // Get Class object
+            Class<?> clazz = Person.class;
+            
+            // Get class name
+            System.out.println("Class: " + clazz.getName());
+            
+            // Get all declared methods
+            Method[] methods = clazz.getDeclaredMethods();
+            for (Method method : methods) {
+                System.out.println("Method: " + method.getName());
+            }
+            
+            // Create instance dynamically
+            Constructor<?> constructor = clazz.getConstructor(String.class, int.class);
+            Person person = (Person) constructor.newInstance("John", 25);
+            
+            // Access private field
+            Field nameField = clazz.getDeclaredField("name");
+            nameField.setAccessible(true);
+            nameField.set(person, "Jane");
+            
+            // Invoke method
+            Method displayMethod = clazz.getMethod("display");
+            displayMethod.invoke(person);
+        }
+    }
+    ```
+
+    **Use cases:** Frameworks like Spring, Hibernate, JUnit use Reflection extensively for dependency injection, ORM mapping, and test execution.
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+26. ### What are the different types of memory areas allocated by JVM?
+
+    JVM allocates memory in different areas for efficient program execution. The main memory areas are:
+
+    1. **Method Area (Metaspace):**
+       - Stores class-level data like class structures, method data, and runtime constant pool
+       - Shared among all threads
+       - Created during JVM startup
+
+    2. **Heap Area:**
+       - Stores all objects and their instance variables
+       - Shared among all threads
+       - Managed by Garbage Collector
+       - Divided into Young Generation (Eden, Survivor spaces) and Old Generation
+
+    3. **Stack Area:**
+       - Each thread has its own stack
+       - Stores local variables, method calls, and partial results
+       - Contains stack frames for each method invocation
+       - Memory is automatically allocated/deallocated
+
+    4. **PC (Program Counter) Registers:**
+       - Each thread has its own PC register
+       - Stores address of currently executing JVM instruction
+       - Updated after each instruction execution
+
+    5. **Native Method Stack:**
+       - Contains native method information
+       - Each thread has its own native method stack
+       - Used for methods written in languages other than Java (C, C++)
+
+    ```
+    JVM Memory Structure:
+    ┌─────────────────────────────────────────────┐
+    │              Method Area (Metaspace)         │
+    │  (Class data, Method data, Constant pool)   │
+    ├─────────────────────────────────────────────┤
+    │                  Heap Area                   │
+    │  ┌─────────────────┬─────────────────────┐  │
+    │  │ Young Generation│   Old Generation    │  │
+    │  │ (Eden,Survivor) │                     │  │
+    │  └─────────────────┴─────────────────────┘  │
+    ├─────────────────────────────────────────────┤
+    │  Stack │  Stack  │  Stack  │ ... (per thread)│
+    ├─────────────────────────────────────────────┤
+    │  PC Reg│  PC Reg │  PC Reg │ ... (per thread)│
+    ├─────────────────────────────────────────────┤
+    │  Native│ Native  │ Native  │ ... (per thread)│
+    └─────────────────────────────────────────────┘
+    ```
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+27. ### What is the difference between throw and throws?
+
+    Both `throw` and `throws` are used in exception handling but serve different purposes.
+
+    **throw:**
+    - Used to explicitly throw an exception
+    - Used inside a method body
+    - Can throw only one exception at a time
+    - Followed by an exception instance
+
+    **throws:**
+    - Used to declare exceptions that a method might throw
+    - Used in method signature
+    - Can declare multiple exceptions
+    - Followed by exception class names
+
+    ```java
+    import java.io.*;
+
+    public class ThrowVsThrows {
+        
+        // Using throws - declares that method may throw an exception
+        public void readFile(String filename) throws FileNotFoundException, IOException {
+            FileReader file = new FileReader(filename);
+            BufferedReader reader = new BufferedReader(file);
+            String line = reader.readLine();
+            reader.close();
+        }
+        
+        // Using throw - explicitly throws an exception
+        public void validateAge(int age) {
+            if (age < 0) {
+                throw new IllegalArgumentException("Age cannot be negative");
+            }
+            if (age < 18) {
+                throw new ArithmeticException("Not eligible to vote");
+            }
+            System.out.println("Eligible to vote");
+        }
+        
+        // Combining throw and throws
+        public void processData(String data) throws CustomException {
+            if (data == null) {
+                throw new CustomException("Data cannot be null");
+            }
+            // Process data
+        }
+    }
+
+    class CustomException extends Exception {
+        public CustomException(String message) {
+            super(message);
+        }
+    }
+    ```
+
+    | throw | throws |
+    |-------|--------|
+    | Used to throw an exception | Used to declare an exception |
+    | Inside method body | In method signature |
+    | Cannot throw multiple exceptions | Can declare multiple exceptions |
+    | Followed by instance | Followed by class name |
+    | Checked exceptions must be caught | Propagates exception to caller |
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+28. ### What is a singleton class and how to create one?
+
+    A Singleton class is a design pattern that ensures only one instance of a class is created throughout the application lifecycle. It provides a global point of access to that instance.
+
+    **Key characteristics:**
+    - Private constructor to prevent direct instantiation
+    - Static method to get the single instance
+    - Static variable to hold the single instance
+
+    **Different ways to create Singleton:**
+
+    1. **Eager Initialization:**
+    ```java
+    public class EagerSingleton {
+        private static final EagerSingleton instance = new EagerSingleton();
+        
+        private EagerSingleton() {}
+        
+        public static EagerSingleton getInstance() {
+            return instance;
+        }
+    }
+    ```
+
+    2. **Lazy Initialization:**
+    ```java
+    public class LazySingleton {
+        private static LazySingleton instance;
+        
+        private LazySingleton() {}
+        
+        public static LazySingleton getInstance() {
+            if (instance == null) {
+                instance = new LazySingleton();
+            }
+            return instance;
+        }
+    }
+    ```
+
+    3. **Thread-Safe Singleton (Double-Checked Locking):**
+    ```java
+    public class ThreadSafeSingleton {
+        private static volatile ThreadSafeSingleton instance;
+        
+        private ThreadSafeSingleton() {}
+        
+        public static ThreadSafeSingleton getInstance() {
+            if (instance == null) {
+                synchronized (ThreadSafeSingleton.class) {
+                    if (instance == null) {
+                        instance = new ThreadSafeSingleton();
+                    }
+                }
+            }
+            return instance;
+        }
+    }
+    ```
+
+    4. **Bill Pugh Singleton (Best Practice):**
+    ```java
+    public class BillPughSingleton {
+        private BillPughSingleton() {}
+        
+        private static class SingletonHelper {
+            private static final BillPughSingleton INSTANCE = new BillPughSingleton();
+        }
+        
+        public static BillPughSingleton getInstance() {
+            return SingletonHelper.INSTANCE;
+        }
+    }
+    ```
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+29. ### What are Java 8 Stream API features?
+
+    Java 8 Stream API provides a functional approach to process collections of objects. Streams support sequential and parallel operations on data.
+
+    **Key Features:**
+    1. **Lazy Evaluation:** Intermediate operations are not executed until a terminal operation is invoked
+    2. **Pipelining:** Operations can be chained together
+    3. **Internal Iteration:** Stream handles iteration internally
+    4. **Parallel Processing:** Easy parallel execution with `parallelStream()`
+
+    **Common Stream Operations:**
+
+    ```java
+    import java.util.*;
+    import java.util.stream.*;
+
+    public class StreamDemo {
+        public static void main(String[] args) {
+            List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+            
+            // filter - filters elements based on condition
+            List<Integer> evenNumbers = numbers.stream()
+                .filter(n -> n % 2 == 0)
+                .collect(Collectors.toList());
+            // Result: [2, 4, 6, 8, 10]
+            
+            // map - transforms elements
+            List<Integer> squares = numbers.stream()
+                .map(n -> n * n)
+                .collect(Collectors.toList());
+            // Result: [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+            
+            // reduce - combines elements
+            int sum = numbers.stream()
+                .reduce(0, (a, b) -> a + b);
+            // Result: 55
+            
+            // sorted - sorts elements
+            List<Integer> sorted = numbers.stream()
+                .sorted(Comparator.reverseOrder())
+                .collect(Collectors.toList());
+            
+            // distinct - removes duplicates
+            List<Integer> unique = Arrays.asList(1, 1, 2, 2, 3).stream()
+                .distinct()
+                .collect(Collectors.toList());
+            // Result: [1, 2, 3]
+            
+            // limit and skip
+            List<Integer> limited = numbers.stream()
+                .skip(2)
+                .limit(5)
+                .collect(Collectors.toList());
+            // Result: [3, 4, 5, 6, 7]
+            
+            // anyMatch, allMatch, noneMatch
+            boolean hasEven = numbers.stream().anyMatch(n -> n % 2 == 0);
+            boolean allPositive = numbers.stream().allMatch(n -> n > 0);
+            
+            // findFirst, findAny
+            Optional<Integer> first = numbers.stream().findFirst();
+            
+            // count
+            long count = numbers.stream().filter(n -> n > 5).count();
+            
+            // forEach
+            numbers.stream().forEach(System.out::println);
+        }
+    }
+    ```
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+30. ### What is the difference between fail-fast and fail-safe iterators?
+
+    Iterators in Java can be categorized as fail-fast or fail-safe based on their behavior when the underlying collection is modified during iteration.
+
+    **Fail-Fast Iterator:**
+    - Throws `ConcurrentModificationException` if the collection is modified during iteration
+    - Works on the original collection
+    - Examples: ArrayList, HashMap, HashSet iterators
+    - Uses `modCount` to detect modifications
+
+    ```java
+    import java.util.*;
+
+    public class FailFastExample {
+        public static void main(String[] args) {
+            List<String> list = new ArrayList<>();
+            list.add("A");
+            list.add("B");
+            list.add("C");
+            
+            Iterator<String> iterator = list.iterator();
+            while (iterator.hasNext()) {
+                String element = iterator.next();
+                if (element.equals("B")) {
+                    list.remove(element); // Throws ConcurrentModificationException
+                }
+            }
+        }
+    }
+    ```
+
+    **Fail-Safe Iterator:**
+    - Does not throw exception if collection is modified during iteration
+    - Works on a clone/copy of the collection
+    - Examples: CopyOnWriteArrayList, ConcurrentHashMap iterators
+    - More memory overhead due to copying
+
+    ```java
+    import java.util.concurrent.*;
+    import java.util.*;
+
+    public class FailSafeExample {
+        public static void main(String[] args) {
+            CopyOnWriteArrayList<String> list = new CopyOnWriteArrayList<>();
+            list.add("A");
+            list.add("B");
+            list.add("C");
+            
+            Iterator<String> iterator = list.iterator();
+            while (iterator.hasNext()) {
+                String element = iterator.next();
+                if (element.equals("B")) {
+                    list.remove(element); // No exception thrown
+                }
+            }
+            System.out.println(list); // [A, C]
+        }
+    }
+    ```
+
+    | Fail-Fast | Fail-Safe |
+    |-----------|-----------|
+    | Throws ConcurrentModificationException | No exception thrown |
+    | Works on original collection | Works on copy of collection |
+    | Less memory overhead | More memory overhead |
+    | ArrayList, HashMap, HashSet | CopyOnWriteArrayList, ConcurrentHashMap |
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+31. ### What is the difference between process and thread?
+
+    A process and a thread are both units of execution, but they differ significantly in their characteristics and usage.
+
+    **Process:**
+    - Independent executing program with its own memory space
+    - Contains at least one thread (main thread)
+    - Has its own address space, heap, stack, and system resources
+    - Processes are isolated from each other
+    - Inter-process communication (IPC) is expensive
+
+    **Thread:**
+    - Lightweight unit of execution within a process
+    - Shares memory space with other threads in the same process
+    - Has its own stack but shares heap with other threads
+    - Threads within a process can communicate directly
+    - Context switching between threads is faster
+
+    ```java
+    public class ProcessVsThread {
+        public static void main(String[] args) {
+            // Creating a new process
+            try {
+                ProcessBuilder pb = new ProcessBuilder("notepad.exe");
+                Process process = pb.start(); // Creates a new process
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            // Creating a new thread
+            Thread thread = new Thread(() -> {
+                System.out.println("Thread running: " + Thread.currentThread().getName());
+            });
+            thread.start(); // Creates a new thread within the same process
+        }
+    }
+    ```
+
+    | Process | Thread |
+    |---------|--------|
+    | Heavy weight | Light weight |
+    | Own memory space | Shared memory space |
+    | Slower context switching | Faster context switching |
+    | Isolated from other processes | Can communicate with other threads |
+    | More resource intensive | Less resource intensive |
+    | Process crash doesn't affect others | Thread crash can affect entire process |
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+32. ### What are the different ways to create a thread in Java?
+
+    There are multiple ways to create a thread in Java:
+
+    **1. Extending Thread class:**
+    ```java
+    class MyThread extends Thread {
+        @Override
+        public void run() {
+            System.out.println("Thread running: " + Thread.currentThread().getName());
+        }
+    }
+
+    // Usage
+    MyThread thread = new MyThread();
+    thread.start();
+    ```
+
+    **2. Implementing Runnable interface:**
+    ```java
+    class MyRunnable implements Runnable {
+        @Override
+        public void run() {
+            System.out.println("Runnable running: " + Thread.currentThread().getName());
+        }
+    }
+
+    // Usage
+    Thread thread = new Thread(new MyRunnable());
+    thread.start();
+    ```
+
+    **3. Using Lambda expression (Java 8+):**
+    ```java
+    Thread thread = new Thread(() -> {
+        System.out.println("Lambda thread running");
+    });
+    thread.start();
+    ```
+
+    **4. Implementing Callable interface (returns result):**
+    ```java
+    import java.util.concurrent.*;
+
+    class MyCallable implements Callable<Integer> {
+        @Override
+        public Integer call() throws Exception {
+            return 42;
+        }
+    }
+
+    // Usage
+    ExecutorService executor = Executors.newSingleThreadExecutor();
+    Future<Integer> future = executor.submit(new MyCallable());
+    Integer result = future.get(); // Gets the result
+    executor.shutdown();
+    ```
+
+    **5. Using ExecutorService:**
+    ```java
+    ExecutorService executor = Executors.newFixedThreadPool(5);
+    
+    executor.execute(() -> {
+        System.out.println("Task executed by: " + Thread.currentThread().getName());
+    });
+    
+    executor.submit(() -> {
+        return "Task completed";
+    });
+    
+    executor.shutdown();
+    ```
+
+    | Method | Returns Value | Can Extend Other Class | Exception Handling |
+    |--------|--------------|------------------------|-------------------|
+    | Thread class | No | No | Unchecked only |
+    | Runnable | No | Yes | Unchecked only |
+    | Callable | Yes | Yes | Checked and Unchecked |
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+33. ### What is synchronization in Java?
+
+    Synchronization is a mechanism that ensures only one thread can access a shared resource at a time. It prevents race conditions and ensures thread safety.
+
+    **Types of Synchronization:**
+
+    **1. Synchronized Method:**
+    ```java
+    class Counter {
+        private int count = 0;
+        
+        public synchronized void increment() {
+            count++;
+        }
+        
+        public synchronized int getCount() {
+            return count;
+        }
+    }
+    ```
+
+    **2. Synchronized Block:**
+    ```java
+    class Counter {
+        private int count = 0;
+        private final Object lock = new Object();
+        
+        public void increment() {
+            synchronized (lock) {
+                count++;
+            }
+        }
+    }
+    ```
+
+    **3. Static Synchronization:**
+    ```java
+    class StaticCounter {
+        private static int count = 0;
+        
+        public static synchronized void increment() {
+            count++;
+        }
+    }
+    ```
+
+    **Example demonstrating the need for synchronization:**
+    ```java
+    class BankAccount {
+        private int balance = 1000;
+        
+        // Without synchronization - race condition possible
+        public void withdraw(int amount) {
+            if (balance >= amount) {
+                System.out.println(Thread.currentThread().getName() + " is withdrawing");
+                balance -= amount;
+                System.out.println("Balance after withdrawal: " + balance);
+            }
+        }
+        
+        // With synchronization - thread safe
+        public synchronized void safeWithdraw(int amount) {
+            if (balance >= amount) {
+                System.out.println(Thread.currentThread().getName() + " is withdrawing");
+                balance -= amount;
+                System.out.println("Balance after withdrawal: " + balance);
+            }
+        }
+    }
+    ```
+
+    **Key Points:**
+    - Every object in Java has an intrinsic lock (monitor)
+    - Only one thread can hold the lock at a time
+    - Synchronization can cause performance overhead
+    - Prefer synchronized blocks over synchronized methods for fine-grained control
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+34. ### What is deadlock and how to avoid it?
+
+    A deadlock is a situation where two or more threads are blocked forever, each waiting for the other to release a lock.
+
+    **Deadlock Example:**
+    ```java
+    public class DeadlockExample {
+        private static final Object lock1 = new Object();
+        private static final Object lock2 = new Object();
+        
+        public static void main(String[] args) {
+            Thread thread1 = new Thread(() -> {
+                synchronized (lock1) {
+                    System.out.println("Thread 1: Holding lock1");
+                    try { Thread.sleep(100); } catch (InterruptedException e) {}
+                    
+                    synchronized (lock2) {
+                        System.out.println("Thread 1: Holding lock1 and lock2");
+                    }
+                }
+            });
+            
+            Thread thread2 = new Thread(() -> {
+                synchronized (lock2) {
+                    System.out.println("Thread 2: Holding lock2");
+                    try { Thread.sleep(100); } catch (InterruptedException e) {}
+                    
+                    synchronized (lock1) {
+                        System.out.println("Thread 2: Holding lock2 and lock1");
+                    }
+                }
+            });
+            
+            thread1.start();
+            thread2.start();
+        }
+    }
+    ```
+
+    **How to Avoid Deadlock:**
+
+    **1. Lock Ordering - Always acquire locks in the same order:**
+    ```java
+    // Fixed version - both threads acquire locks in same order
+    Thread thread1 = new Thread(() -> {
+        synchronized (lock1) {
+            synchronized (lock2) {
+                // work
+            }
+        }
+    });
+
+    Thread thread2 = new Thread(() -> {
+        synchronized (lock1) {  // Same order as thread1
+            synchronized (lock2) {
+                // work
+            }
+        }
+    });
+    ```
+
+    **2. Use tryLock with timeout:**
+    ```java
+    import java.util.concurrent.locks.*;
+
+    ReentrantLock lock1 = new ReentrantLock();
+    ReentrantLock lock2 = new ReentrantLock();
+
+    public void safeMethod() {
+        boolean gotLock1 = false;
+        boolean gotLock2 = false;
+        try {
+            gotLock1 = lock1.tryLock(1, TimeUnit.SECONDS);
+            gotLock2 = lock2.tryLock(1, TimeUnit.SECONDS);
+            if (gotLock1 && gotLock2) {
+                // Do work
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            if (gotLock1) lock1.unlock();
+            if (gotLock2) lock2.unlock();
+        }
+    }
+    ```
+
+    **3. Avoid nested locks**
+    **4. Use lock timeout**
+    **5. Avoid holding locks for long periods**
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+35. ### What is the volatile keyword in Java?
+
+    The `volatile` keyword in Java is used to indicate that a variable's value may be modified by different threads. It ensures visibility of changes across threads and prevents caching of the variable.
+
+    **Key Features:**
+    1. **Visibility:** Changes made by one thread are immediately visible to other threads
+    2. **Atomicity:** Read and write operations on volatile variables are atomic (for primitives)
+    3. **No Caching:** The variable is always read from main memory, not from CPU cache
+
+    ```java
+    public class VolatileExample {
+        private volatile boolean running = true;
+        
+        public void stop() {
+            running = false;
+        }
+        
+        public void run() {
+            while (running) {
+                // Do work
+            }
+            System.out.println("Stopped");
+        }
+        
+        public static void main(String[] args) throws InterruptedException {
+            VolatileExample example = new VolatileExample();
+            
+            Thread worker = new Thread(() -> example.run());
+            worker.start();
+            
+            Thread.sleep(1000);
+            example.stop(); // This change will be visible to the worker thread
+        }
+    }
+    ```
+
+    **Without volatile:**
+    ```java
+    // Without volatile, the worker thread might never see the change
+    // because it may read from its local cache
+    private boolean running = true; // Thread may cache this value
+    ```
+
+    **Volatile vs Synchronized:**
+    | volatile | synchronized |
+    |----------|--------------|
+    | Only ensures visibility | Ensures visibility and atomicity |
+    | No blocking | Causes blocking |
+    | Cannot be used for compound operations | Can protect compound operations |
+    | Less overhead | More overhead |
+
+    **Note:** Volatile is not suitable for compound operations like `count++`. Use `AtomicInteger` or `synchronized` for such cases.
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+36. ### What is the transient keyword in Java?
+
+    The `transient` keyword in Java is used to indicate that a field should not be serialized when the object is converted to a byte stream.
+
+    **Use Cases:**
+    - Sensitive data like passwords
+    - Calculated/derived fields
+    - Non-serializable fields
+    - Thread-local data
+
+    ```java
+    import java.io.*;
+
+    class User implements Serializable {
+        private static final long serialVersionUID = 1L;
+        
+        private String username;
+        private transient String password;  // Will not be serialized
+        private transient int loginCount;   // Will not be serialized
+        
+        public User(String username, String password) {
+            this.username = username;
+            this.password = password;
+            this.loginCount = 0;
+        }
+        
+        @Override
+        public String toString() {
+            return "User{username='" + username + "', password='" + password + 
+                   "', loginCount=" + loginCount + "}";
+        }
+    }
+
+    public class TransientDemo {
+        public static void main(String[] args) {
+            User user = new User("john", "secret123");
+            user.loginCount = 5;
+            System.out.println("Before serialization: " + user);
+            
+            // Serialize
+            try (ObjectOutputStream oos = new ObjectOutputStream(
+                    new FileOutputStream("user.ser"))) {
+                oos.writeObject(user);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            
+            // Deserialize
+            try (ObjectInputStream ois = new ObjectInputStream(
+                    new FileInputStream("user.ser"))) {
+                User deserializedUser = (User) ois.readObject();
+                System.out.println("After deserialization: " + deserializedUser);
+                // Output: User{username='john', password='null', loginCount=0}
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    ```
+
+    **Key Points:**
+    - Transient fields get default values after deserialization (null for objects, 0 for numbers, false for boolean)
+    - Static fields are not serialized regardless of transient keyword
+    - Can be combined with custom readObject/writeObject for complex scenarios
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+37. ### What is serialization and deserialization?
+
+    **Serialization** is the process of converting an object's state into a byte stream. **Deserialization** is the reverse process - converting a byte stream back into an object.
+
+    **Why Serialization?**
+    - Persist object state to file/database
+    - Send objects over network
+    - Deep copy objects
+    - Cache objects
+
+    ```java
+    import java.io.*;
+
+    class Employee implements Serializable {
+        private static final long serialVersionUID = 1L;
+        
+        private String name;
+        private int id;
+        private transient double salary; // Not serialized
+        
+        public Employee(String name, int id, double salary) {
+            this.name = name;
+            this.id = id;
+            this.salary = salary;
+        }
+        
+        @Override
+        public String toString() {
+            return "Employee{name='" + name + "', id=" + id + ", salary=" + salary + "}";
+        }
+    }
+
+    public class SerializationDemo {
+        public static void main(String[] args) {
+            Employee emp = new Employee("John", 101, 50000);
+            
+            // Serialization
+            try (ObjectOutputStream oos = new ObjectOutputStream(
+                    new FileOutputStream("employee.ser"))) {
+                oos.writeObject(emp);
+                System.out.println("Object serialized successfully");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            
+            // Deserialization
+            try (ObjectInputStream ois = new ObjectInputStream(
+                    new FileInputStream("employee.ser"))) {
+                Employee deserializedEmp = (Employee) ois.readObject();
+                System.out.println("Deserialized: " + deserializedEmp);
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    ```
+
+    **Custom Serialization:**
+    ```java
+    class CustomSerializable implements Serializable {
+        private String data;
+        private transient String sensitiveData;
+        
+        private void writeObject(ObjectOutputStream oos) throws IOException {
+            oos.defaultWriteObject();
+            // Encrypt and write sensitive data
+            oos.writeObject(encrypt(sensitiveData));
+        }
+        
+        private void readObject(ObjectInputStream ois) 
+                throws IOException, ClassNotFoundException {
+            ois.defaultReadObject();
+            // Decrypt sensitive data
+            sensitiveData = decrypt((String) ois.readObject());
+        }
+        
+        private String encrypt(String data) { return data; } // Placeholder
+        private String decrypt(String data) { return data; } // Placeholder
+    }
+    ```
+
+    **Important:** Always declare `serialVersionUID` to maintain compatibility during deserialization.
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+38. ### What are functional interfaces in Java?
+
+    A functional interface is an interface that contains exactly one abstract method. They are the foundation for lambda expressions in Java 8.
+
+    **Key Characteristics:**
+    - Has exactly one abstract method
+    - Can have multiple default and static methods
+    - Can be annotated with `@FunctionalInterface`
+    - Used as target types for lambda expressions
+
+    ```java
+    @FunctionalInterface
+    interface Calculator {
+        int calculate(int a, int b);
+        
+        // Default method - allowed
+        default void print(String msg) {
+            System.out.println(msg);
+        }
+        
+        // Static method - allowed
+        static void info() {
+            System.out.println("Calculator interface");
+        }
+    }
+
+    public class FunctionalInterfaceDemo {
+        public static void main(String[] args) {
+            // Using lambda expression
+            Calculator add = (a, b) -> a + b;
+            Calculator multiply = (a, b) -> a * b;
+            
+            System.out.println("Sum: " + add.calculate(5, 3));      // 8
+            System.out.println("Product: " + multiply.calculate(5, 3)); // 15
+        }
+    }
+    ```
+
+    **Built-in Functional Interfaces (java.util.function):**
+
+    ```java
+    import java.util.function.*;
+
+    public class BuiltInFunctionalInterfaces {
+        public static void main(String[] args) {
+            // Predicate - takes input, returns boolean
+            Predicate<Integer> isEven = n -> n % 2 == 0;
+            System.out.println(isEven.test(4)); // true
+            
+            // Function - takes input, returns output
+            Function<String, Integer> length = s -> s.length();
+            System.out.println(length.apply("Hello")); // 5
+            
+            // Consumer - takes input, returns nothing
+            Consumer<String> printer = s -> System.out.println(s);
+            printer.accept("Hello"); // prints Hello
+            
+            // Supplier - takes nothing, returns output
+            Supplier<Double> random = () -> Math.random();
+            System.out.println(random.get()); // random number
+            
+            // BiFunction - takes two inputs, returns output
+            BiFunction<Integer, Integer, Integer> add = (a, b) -> a + b;
+            System.out.println(add.apply(5, 3)); // 8
+            
+            // UnaryOperator - takes input, returns same type
+            UnaryOperator<Integer> square = n -> n * n;
+            System.out.println(square.apply(5)); // 25
+            
+            // BinaryOperator - takes two inputs of same type, returns same type
+            BinaryOperator<Integer> max = (a, b) -> a > b ? a : b;
+            System.out.println(max.apply(5, 3)); // 5
+        }
+    }
+    ```
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+39. ### What are lambda expressions in Java?
+
+    Lambda expressions are anonymous functions that provide a concise way to implement functional interfaces. Introduced in Java 8, they enable functional programming in Java.
+
+    **Syntax:**
+    ```
+    (parameters) -> expression
+    (parameters) -> { statements; }
+    ```
+
+    **Examples:**
+
+    ```java
+    import java.util.*;
+    import java.util.function.*;
+
+    public class LambdaExamples {
+        public static void main(String[] args) {
+            // No parameters
+            Runnable runnable = () -> System.out.println("Hello Lambda!");
+            runnable.run();
+            
+            // One parameter (parentheses optional)
+            Consumer<String> consumer = s -> System.out.println(s);
+            consumer.accept("Hello");
+            
+            // Multiple parameters
+            BiFunction<Integer, Integer, Integer> add = (a, b) -> a + b;
+            System.out.println(add.apply(5, 3));
+            
+            // With type declarations
+            BiFunction<Integer, Integer, Integer> multiply = 
+                (Integer a, Integer b) -> a * b;
+            
+            // Multiple statements (braces required)
+            BiFunction<Integer, Integer, Integer> calculate = (a, b) -> {
+                int sum = a + b;
+                int product = a * b;
+                return sum + product;
+            };
+            
+            // With Collections
+            List<String> names = Arrays.asList("John", "Jane", "Bob", "Alice");
+            
+            // forEach with lambda
+            names.forEach(name -> System.out.println(name));
+            
+            // Method reference (shorthand for lambda)
+            names.forEach(System.out::println);
+            
+            // Sorting with lambda
+            names.sort((s1, s2) -> s1.compareTo(s2));
+            
+            // Using Comparator method reference
+            names.sort(String::compareTo);
+            
+            // Filtering with streams
+            List<String> filtered = names.stream()
+                .filter(name -> name.startsWith("J"))
+                .collect(Collectors.toList());
+            
+            // Mapping with streams
+            List<Integer> lengths = names.stream()
+                .map(name -> name.length())
+                .collect(Collectors.toList());
+        }
+    }
+    ```
+
+    **Method References:**
+    ```java
+    // Static method reference
+    Function<String, Integer> parseInt = Integer::parseInt;
+
+    // Instance method reference
+    String str = "Hello";
+    Supplier<Integer> length = str::length;
+
+    // Constructor reference
+    Supplier<ArrayList<String>> listSupplier = ArrayList::new;
+    ```
+
+    **Benefits:**
+    - Concise and readable code
+    - Enables functional programming
+    - Better support for parallel processing
+    - Reduced boilerplate code
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+40. ### What is Optional class in Java 8?
+
+    The `Optional` class is a container object that may or may not contain a non-null value. It helps avoid `NullPointerException` and makes null handling more explicit.
+
+    **Creating Optional:**
+    ```java
+    import java.util.Optional;
+
+    public class OptionalDemo {
+        public static void main(String[] args) {
+            // Creating Optional
+            Optional<String> empty = Optional.empty();
+            Optional<String> name = Optional.of("John");
+            Optional<String> nullable = Optional.ofNullable(null);
+            
+            // Checking if value present
+            System.out.println(name.isPresent());     // true
+            System.out.println(empty.isPresent());    // false
+            System.out.println(empty.isEmpty());      // true (Java 11+)
+            
+            // Getting value
+            String value = name.get();  // Returns "John"
+            // String error = empty.get(); // Throws NoSuchElementException
+            
+            // Safe access with orElse
+            String defaultName = empty.orElse("Unknown");  // "Unknown"
+            
+            // orElseGet - lazy evaluation
+            String lazyDefault = empty.orElseGet(() -> computeDefault());
+            
+            // orElseThrow
+            String required = name.orElseThrow(() -> 
+                new IllegalArgumentException("Name is required"));
+            
+            // ifPresent - execute if value exists
+            name.ifPresent(n -> System.out.println("Name: " + n));
+            
+            // ifPresentOrElse (Java 9+)
+            name.ifPresentOrElse(
+                n -> System.out.println("Found: " + n),
+                () -> System.out.println("Not found")
+            );
+        }
+        
+        static String computeDefault() {
+            return "Computed Default";
+        }
+    }
+    ```
+
+    **Optional with Streams:**
+    ```java
+    public class OptionalStreams {
+        public static void main(String[] args) {
+            Optional<String> name = Optional.of("  John  ");
+            
+            // map - transform value
+            Optional<Integer> length = name.map(String::length);
+            
+            // Chaining operations
+            String result = name
+                .map(String::trim)
+                .map(String::toUpperCase)
+                .orElse("UNKNOWN");
+            System.out.println(result);  // "JOHN"
+            
+            // filter - conditional
+            Optional<String> filtered = name
+                .filter(n -> n.trim().length() > 3);
+            
+            // flatMap - for nested Optionals
+            Optional<Optional<String>> nested = Optional.of(Optional.of("Hello"));
+            Optional<String> flat = nested.flatMap(o -> o);
+        }
+    }
+    ```
+
+    **Best Practices:**
+    ```java
+    class UserService {
+        // Return Optional for methods that may not find a result
+        public Optional<User> findById(int id) {
+            User user = database.find(id);
+            return Optional.ofNullable(user);
+        }
+        
+        // Don't use Optional for fields or parameters
+        // Bad: private Optional<String> name;
+        // Good: private String name; // can be null
+        
+        // Don't use Optional.get() without checking
+        // Bad: optional.get()
+        // Good: optional.orElse(default) or optional.ifPresent(...)
+    }
+    ```
 
     **[⬆ Back to Top](#table-of-contents)**
 
