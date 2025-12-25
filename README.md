@@ -2196,5 +2196,1081 @@ Frequently asked Java Interview questions
 
     **[⬆ Back to Top](#table-of-contents)**
 
+41. ### What is the difference between Collection and Collections?
+
+    `Collection` and `Collections` are two different concepts in Java that are often confused.
+
+    **Collection (Interface):**
+    - It is a root interface in the Java Collections Framework
+    - Located in `java.util` package
+    - Represents a group of objects known as elements
+    - Extended by List, Set, and Queue interfaces
+
+    **Collections (Utility Class):**
+    - It is a utility class that provides static methods for collection operations
+    - Located in `java.util` package
+    - Contains methods for sorting, searching, shuffling, reversing, etc.
+    - Cannot be instantiated (all methods are static)
+
+    ```java
+    import java.util.*;
+
+    public class CollectionVsCollections {
+        public static void main(String[] args) {
+            // Collection - interface used to create a collection
+            Collection<String> collection = new ArrayList<>();
+            collection.add("Apple");
+            collection.add("Banana");
+            collection.add("Cherry");
+            
+            // Collections - utility class with static methods
+            List<String> list = new ArrayList<>(collection);
+            
+            // Sorting using Collections utility
+            Collections.sort(list);
+            System.out.println("Sorted: " + list);
+            
+            // Reverse the list
+            Collections.reverse(list);
+            System.out.println("Reversed: " + list);
+            
+            // Shuffle the list
+            Collections.shuffle(list);
+            System.out.println("Shuffled: " + list);
+            
+            // Find min and max
+            System.out.println("Min: " + Collections.min(list));
+            System.out.println("Max: " + Collections.max(list));
+            
+            // Create unmodifiable collection
+            List<String> unmodifiable = Collections.unmodifiableList(list);
+            
+            // Create synchronized collection
+            List<String> syncList = Collections.synchronizedList(new ArrayList<>());
+        }
+    }
+    ```
+
+    | Collection | Collections |
+    |------------|-------------|
+    | Interface | Utility class |
+    | Used to represent a group of objects | Provides static methods for operations |
+    | Can be implemented | Cannot be instantiated |
+    | Root of Collection hierarchy | Helper class for Collection operations |
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+42. ### What is the difference between Set and List?
+
+    Both Set and List are interfaces in the Java Collections Framework, but they have different characteristics:
+
+    | List | Set |
+    |------|-----|
+    | Allows duplicate elements | Does not allow duplicate elements |
+    | Maintains insertion order | May or may not maintain order (depends on implementation) |
+    | Elements can be accessed by index | No index-based access |
+    | Allows multiple null values | Allows at most one null value (HashSet, LinkedHashSet) |
+    | Implementations: ArrayList, LinkedList, Vector | Implementations: HashSet, LinkedHashSet, TreeSet |
+
+    ```java
+    import java.util.*;
+
+    public class ListVsSet {
+        public static void main(String[] args) {
+            // List - allows duplicates, maintains order
+            List<String> list = new ArrayList<>();
+            list.add("Apple");
+            list.add("Banana");
+            list.add("Apple");  // Duplicate allowed
+            list.add(null);
+            list.add(null);     // Multiple nulls allowed
+            System.out.println("List: " + list);  // [Apple, Banana, Apple, null, null]
+            System.out.println("Element at index 1: " + list.get(1));  // Index access
+            
+            // Set - no duplicates
+            Set<String> hashSet = new HashSet<>();
+            hashSet.add("Apple");
+            hashSet.add("Banana");
+            hashSet.add("Apple");  // Duplicate ignored
+            hashSet.add(null);     // Only one null allowed
+            System.out.println("HashSet: " + hashSet);  // Order not guaranteed
+            
+            // LinkedHashSet - maintains insertion order
+            Set<String> linkedHashSet = new LinkedHashSet<>();
+            linkedHashSet.add("Cherry");
+            linkedHashSet.add("Apple");
+            linkedHashSet.add("Banana");
+            System.out.println("LinkedHashSet: " + linkedHashSet);  // [Cherry, Apple, Banana]
+            
+            // TreeSet - sorted order, no nulls
+            Set<String> treeSet = new TreeSet<>();
+            treeSet.add("Cherry");
+            treeSet.add("Apple");
+            treeSet.add("Banana");
+            System.out.println("TreeSet: " + treeSet);  // [Apple, Banana, Cherry]
+        }
+    }
+    ```
+
+    **When to use:**
+    - Use **List** when you need to maintain insertion order and allow duplicates
+    - Use **Set** when you need to store unique elements only
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+43. ### What is the difference between HashSet and TreeSet?
+
+    Both HashSet and TreeSet implement the Set interface but have different internal implementations and characteristics:
+
+    | HashSet | TreeSet |
+    |---------|---------|
+    | Uses HashMap internally | Uses TreeMap (Red-Black Tree) internally |
+    | Does not maintain any order | Maintains elements in sorted (natural) order |
+    | Allows one null element | Does not allow null elements |
+    | O(1) for add, remove, contains | O(log n) for add, remove, contains |
+    | Uses hashCode() and equals() | Uses compareTo() or Comparator |
+    | Better performance for basic operations | Better when sorted order is needed |
+
+    ```java
+    import java.util.*;
+
+    public class HashSetVsTreeSet {
+        public static void main(String[] args) {
+            // HashSet - no ordering, allows null
+            Set<Integer> hashSet = new HashSet<>();
+            hashSet.add(30);
+            hashSet.add(10);
+            hashSet.add(20);
+            hashSet.add(null);  // Allowed
+            hashSet.add(10);    // Duplicate ignored
+            System.out.println("HashSet: " + hashSet);  // Order not guaranteed
+            
+            // TreeSet - sorted order, no null
+            Set<Integer> treeSet = new TreeSet<>();
+            treeSet.add(30);
+            treeSet.add(10);
+            treeSet.add(20);
+            // treeSet.add(null);  // Throws NullPointerException
+            System.out.println("TreeSet: " + treeSet);  // [10, 20, 30] - sorted
+            
+            // TreeSet with custom Comparator (descending order)
+            Set<Integer> descendingSet = new TreeSet<>(Collections.reverseOrder());
+            descendingSet.add(30);
+            descendingSet.add(10);
+            descendingSet.add(20);
+            System.out.println("Descending TreeSet: " + descendingSet);  // [30, 20, 10]
+            
+            // TreeSet with custom objects
+            Set<Person> personSet = new TreeSet<>(Comparator.comparing(Person::getName));
+            personSet.add(new Person("John", 25));
+            personSet.add(new Person("Alice", 30));
+            personSet.add(new Person("Bob", 20));
+            System.out.println("Person TreeSet: " + personSet);
+        }
+    }
+
+    class Person {
+        private String name;
+        private int age;
+        
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+        
+        public String getName() { return name; }
+        public int getAge() { return age; }
+        
+        @Override
+        public String toString() {
+            return name + "(" + age + ")";
+        }
+    }
+    ```
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+44. ### What is the diamond problem in Java?
+
+    The diamond problem is an ambiguity that arises in multiple inheritance when a class inherits from two classes that both inherit from a common superclass. It's called "diamond" because of the shape of the inheritance diagram.
+
+    **The Problem:**
+    ```
+           A
+          / \
+         B   C
+          \ /
+           D
+    ```
+    If class D inherits from both B and C, and both B and C override a method from A, which version should D use?
+
+    **Java's Solution:**
+    Java does not allow multiple inheritance with classes to avoid the diamond problem. However, with Java 8+ interfaces having default methods, a similar situation can occur:
+
+    ```java
+    interface A {
+        default void display() {
+            System.out.println("Display from A");
+        }
+    }
+
+    interface B extends A {
+        @Override
+        default void display() {
+            System.out.println("Display from B");
+        }
+    }
+
+    interface C extends A {
+        @Override
+        default void display() {
+            System.out.println("Display from C");
+        }
+    }
+
+    // Diamond problem with interfaces
+    class D implements B, C {
+        // Must override to resolve ambiguity
+        @Override
+        public void display() {
+            // Can choose which interface method to call
+            B.super.display();  // Calls B's display
+            // or
+            // C.super.display();  // Calls C's display
+            // or provide own implementation
+            System.out.println("Display from D");
+        }
+    }
+
+    public class DiamondProblem {
+        public static void main(String[] args) {
+            D d = new D();
+            d.display();
+        }
+    }
+    ```
+
+    **Resolution Rules in Java:**
+    1. **Class wins over interface:** If a class inherits a method from both a superclass and an interface, the class method takes precedence
+    2. **Subtype wins:** More specific interface's default method is chosen over less specific one
+    3. **Explicit resolution:** If still ambiguous, the class must explicitly override and specify which method to use
+
+    ```java
+    class Parent {
+        void show() {
+            System.out.println("Parent show");
+        }
+    }
+
+    interface MyInterface {
+        default void show() {
+            System.out.println("Interface show");
+        }
+    }
+
+    // Class method wins over interface default method
+    class Child extends Parent implements MyInterface {
+        // No override needed - Parent's show() is used automatically
+    }
+    ```
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+45. ### What is dependency injection?
+
+    Dependency Injection (DI) is a design pattern used to implement Inversion of Control (IoC). It allows the creation of dependent objects outside of a class and provides those objects to a class in different ways.
+
+    **Benefits of Dependency Injection:**
+    1. Loose coupling between classes
+    2. Easier unit testing (mock dependencies)
+    3. Better code reusability
+    4. Easier maintenance and flexibility
+
+    **Types of Dependency Injection:**
+
+    1. **Constructor Injection:**
+    ```java
+    // Dependency
+    interface MessageService {
+        void sendMessage(String message);
+    }
+
+    class EmailService implements MessageService {
+        @Override
+        public void sendMessage(String message) {
+            System.out.println("Email sent: " + message);
+        }
+    }
+
+    class SMSService implements MessageService {
+        @Override
+        public void sendMessage(String message) {
+            System.out.println("SMS sent: " + message);
+        }
+    }
+
+    // Constructor Injection
+    class NotificationService {
+        private final MessageService messageService;
+        
+        // Dependency injected through constructor
+        public NotificationService(MessageService messageService) {
+            this.messageService = messageService;
+        }
+        
+        public void notify(String message) {
+            messageService.sendMessage(message);
+        }
+    }
+    ```
+
+    2. **Setter Injection:**
+    ```java
+    class NotificationService {
+        private MessageService messageService;
+        
+        // Dependency injected through setter
+        public void setMessageService(MessageService messageService) {
+            this.messageService = messageService;
+        }
+        
+        public void notify(String message) {
+            messageService.sendMessage(message);
+        }
+    }
+    ```
+
+    3. **Interface Injection:**
+    ```java
+    interface MessageServiceInjector {
+        void injectMessageService(MessageService service);
+    }
+
+    class NotificationService implements MessageServiceInjector {
+        private MessageService messageService;
+        
+        @Override
+        public void injectMessageService(MessageService service) {
+            this.messageService = service;
+        }
+        
+        public void notify(String message) {
+            messageService.sendMessage(message);
+        }
+    }
+    ```
+
+    **Usage Example:**
+    ```java
+    public class DIExample {
+        public static void main(String[] args) {
+            // Create dependencies
+            MessageService emailService = new EmailService();
+            MessageService smsService = new SMSService();
+            
+            // Inject dependencies
+            NotificationService notifier1 = new NotificationService(emailService);
+            notifier1.notify("Hello via Email!");
+            
+            NotificationService notifier2 = new NotificationService(smsService);
+            notifier2.notify("Hello via SMS!");
+        }
+    }
+    ```
+
+    **Note:** Frameworks like Spring provide automatic dependency injection using annotations like `@Autowired`, `@Inject`.
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+46. ### What is the difference between shallow copy and deep copy?
+
+    When copying objects in Java, there are two types of copies: shallow copy and deep copy.
+
+    **Shallow Copy:**
+    - Creates a new object but copies references to nested objects
+    - Changes to nested objects affect both copies
+    - Default behavior of `clone()` method
+
+    **Deep Copy:**
+    - Creates a new object and recursively copies all nested objects
+    - Changes to nested objects don't affect the original
+    - Requires manual implementation
+
+    ```java
+    import java.util.ArrayList;
+    import java.util.List;
+
+    class Address implements Cloneable {
+        String city;
+        
+        public Address(String city) {
+            this.city = city;
+        }
+        
+        @Override
+        protected Address clone() throws CloneNotSupportedException {
+            return (Address) super.clone();
+        }
+        
+        @Override
+        public String toString() {
+            return city;
+        }
+    }
+
+    class Person implements Cloneable {
+        String name;
+        Address address;
+        List<String> hobbies;
+        
+        public Person(String name, Address address, List<String> hobbies) {
+            this.name = name;
+            this.address = address;
+            this.hobbies = hobbies;
+        }
+        
+        // Shallow Copy
+        public Person shallowCopy() throws CloneNotSupportedException {
+            return (Person) super.clone();
+        }
+        
+        // Deep Copy
+        public Person deepCopy() throws CloneNotSupportedException {
+            Person cloned = (Person) super.clone();
+            cloned.address = this.address.clone();  // Clone nested object
+            cloned.hobbies = new ArrayList<>(this.hobbies);  // Create new list
+            return cloned;
+        }
+        
+        @Override
+        public String toString() {
+            return "Person{name='" + name + "', address=" + address + ", hobbies=" + hobbies + "}";
+        }
+    }
+
+    public class CopyExample {
+        public static void main(String[] args) throws CloneNotSupportedException {
+            List<String> hobbies = new ArrayList<>();
+            hobbies.add("Reading");
+            
+            Person original = new Person("John", new Address("New York"), hobbies);
+            
+            // Shallow Copy
+            Person shallowCopy = original.shallowCopy();
+            
+            // Deep Copy
+            Person deepCopy = original.deepCopy();
+            
+            // Modify nested objects
+            original.address.city = "Los Angeles";
+            original.hobbies.add("Gaming");
+            
+            System.out.println("Original: " + original);
+            System.out.println("Shallow Copy: " + shallowCopy);  // Address changed!
+            System.out.println("Deep Copy: " + deepCopy);        // Address unchanged
+        }
+    }
+    ```
+
+    | Shallow Copy | Deep Copy |
+    |--------------|-----------|
+    | Copies object references | Copies actual objects |
+    | Nested objects are shared | Nested objects are independent |
+    | Faster and less memory | Slower and more memory |
+    | Changes affect both copies | Changes are isolated |
+    | Default clone() behavior | Requires custom implementation |
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+47. ### What are design patterns in Java?
+
+    Design patterns are reusable solutions to common problems in software design. They represent best practices and provide templates for solving design challenges.
+
+    **Categories of Design Patterns:**
+
+    1. **Creational Patterns** - Deal with object creation mechanisms
+       - Singleton
+       - Factory Method
+       - Abstract Factory
+       - Builder
+       - Prototype
+
+    2. **Structural Patterns** - Deal with object composition
+       - Adapter
+       - Bridge
+       - Composite
+       - Decorator
+       - Facade
+       - Flyweight
+       - Proxy
+
+    3. **Behavioral Patterns** - Deal with object interaction
+       - Chain of Responsibility
+       - Command
+       - Iterator
+       - Mediator
+       - Memento
+       - Observer
+       - State
+       - Strategy
+       - Template Method
+       - Visitor
+
+    **Common Design Patterns Examples:**
+
+    ```java
+    // 1. SINGLETON - Only one instance
+    public class Singleton {
+        private static Singleton instance;
+        private Singleton() {}
+        public static synchronized Singleton getInstance() {
+            if (instance == null) {
+                instance = new Singleton();
+            }
+            return instance;
+        }
+    }
+
+    // 2. FACTORY - Creates objects without exposing creation logic
+    interface Animal {
+        void speak();
+    }
+    class Dog implements Animal {
+        public void speak() { System.out.println("Woof!"); }
+    }
+    class Cat implements Animal {
+        public void speak() { System.out.println("Meow!"); }
+    }
+    class AnimalFactory {
+        public static Animal createAnimal(String type) {
+            return switch (type.toLowerCase()) {
+                case "dog" -> new Dog();
+                case "cat" -> new Cat();
+                default -> throw new IllegalArgumentException("Unknown animal");
+            };
+        }
+    }
+
+    // 3. OBSERVER - One-to-many dependency
+    interface Observer {
+        void update(String message);
+    }
+    class NewsSubscriber implements Observer {
+        private String name;
+        public NewsSubscriber(String name) { this.name = name; }
+        public void update(String message) {
+            System.out.println(name + " received: " + message);
+        }
+    }
+
+    // 4. STRATEGY - Family of interchangeable algorithms
+    interface PaymentStrategy {
+        void pay(int amount);
+    }
+    class CreditCardPayment implements PaymentStrategy {
+        public void pay(int amount) {
+            System.out.println("Paid $" + amount + " with Credit Card");
+        }
+    }
+    class PayPalPayment implements PaymentStrategy {
+        public void pay(int amount) {
+            System.out.println("Paid $" + amount + " with PayPal");
+        }
+    }
+
+    // 5. DECORATOR - Add behavior dynamically
+    interface Coffee {
+        double getCost();
+        String getDescription();
+    }
+    class SimpleCoffee implements Coffee {
+        public double getCost() { return 2.0; }
+        public String getDescription() { return "Simple Coffee"; }
+    }
+    class MilkDecorator implements Coffee {
+        private Coffee coffee;
+        public MilkDecorator(Coffee coffee) { this.coffee = coffee; }
+        public double getCost() { return coffee.getCost() + 0.5; }
+        public String getDescription() { return coffee.getDescription() + ", Milk"; }
+    }
+    ```
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+48. ### What is the factory design pattern?
+
+    The Factory Design Pattern is a creational pattern that provides an interface for creating objects without specifying their exact classes. It delegates the instantiation logic to subclasses or factory methods.
+
+    **Types of Factory Patterns:**
+
+    1. **Simple Factory (Static Factory Method):**
+    ```java
+    interface Shape {
+        void draw();
+    }
+
+    class Circle implements Shape {
+        @Override
+        public void draw() {
+            System.out.println("Drawing Circle");
+        }
+    }
+
+    class Rectangle implements Shape {
+        @Override
+        public void draw() {
+            System.out.println("Drawing Rectangle");
+        }
+    }
+
+    class Triangle implements Shape {
+        @Override
+        public void draw() {
+            System.out.println("Drawing Triangle");
+        }
+    }
+
+    // Simple Factory
+    class ShapeFactory {
+        public static Shape createShape(String shapeType) {
+            if (shapeType == null) {
+                return null;
+            }
+            return switch (shapeType.toUpperCase()) {
+                case "CIRCLE" -> new Circle();
+                case "RECTANGLE" -> new Rectangle();
+                case "TRIANGLE" -> new Triangle();
+                default -> throw new IllegalArgumentException("Unknown shape: " + shapeType);
+            };
+        }
+    }
+
+    public class SimpleFactoryDemo {
+        public static void main(String[] args) {
+            Shape circle = ShapeFactory.createShape("CIRCLE");
+            circle.draw();
+            
+            Shape rectangle = ShapeFactory.createShape("RECTANGLE");
+            rectangle.draw();
+        }
+    }
+    ```
+
+    2. **Factory Method Pattern:**
+    ```java
+    // Product interface
+    interface Vehicle {
+        void drive();
+    }
+
+    class Car implements Vehicle {
+        @Override
+        public void drive() {
+            System.out.println("Driving a car");
+        }
+    }
+
+    class Motorcycle implements Vehicle {
+        @Override
+        public void drive() {
+            System.out.println("Riding a motorcycle");
+        }
+    }
+
+    // Creator abstract class
+    abstract class VehicleFactory {
+        // Factory method
+        public abstract Vehicle createVehicle();
+        
+        public void deliverVehicle() {
+            Vehicle vehicle = createVehicle();
+            System.out.println("Delivering vehicle...");
+            vehicle.drive();
+        }
+    }
+
+    class CarFactory extends VehicleFactory {
+        @Override
+        public Vehicle createVehicle() {
+            return new Car();
+        }
+    }
+
+    class MotorcycleFactory extends VehicleFactory {
+        @Override
+        public Vehicle createVehicle() {
+            return new Motorcycle();
+        }
+    }
+
+    public class FactoryMethodDemo {
+        public static void main(String[] args) {
+            VehicleFactory carFactory = new CarFactory();
+            carFactory.deliverVehicle();
+            
+            VehicleFactory motorcycleFactory = new MotorcycleFactory();
+            motorcycleFactory.deliverVehicle();
+        }
+    }
+    ```
+
+    **Benefits:**
+    - Loose coupling between creator and products
+    - Single Responsibility Principle - creation code in one place
+    - Open/Closed Principle - easy to add new product types
+    - Easier unit testing with mock objects
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+49. ### What is the builder design pattern?
+
+    The Builder Design Pattern is a creational pattern that separates the construction of a complex object from its representation. It allows step-by-step construction of objects and produces different representations using the same construction process.
+
+    **When to use:**
+    - When object has many optional parameters
+    - When object creation involves many steps
+    - When you want immutable objects with many fields
+
+    ```java
+    // Product class with many fields
+    class Computer {
+        // Required parameters
+        private final String processor;
+        private final int ram;
+        
+        // Optional parameters
+        private final int storage;
+        private final boolean hasGraphicsCard;
+        private final boolean hasBluetooth;
+        private final boolean hasWifi;
+        private final String operatingSystem;
+        
+        private Computer(ComputerBuilder builder) {
+            this.processor = builder.processor;
+            this.ram = builder.ram;
+            this.storage = builder.storage;
+            this.hasGraphicsCard = builder.hasGraphicsCard;
+            this.hasBluetooth = builder.hasBluetooth;
+            this.hasWifi = builder.hasWifi;
+            this.operatingSystem = builder.operatingSystem;
+        }
+        
+        // Getters
+        public String getProcessor() { return processor; }
+        public int getRam() { return ram; }
+        public int getStorage() { return storage; }
+        public boolean hasGraphicsCard() { return hasGraphicsCard; }
+        public boolean hasBluetooth() { return hasBluetooth; }
+        public boolean hasWifi() { return hasWifi; }
+        public String getOperatingSystem() { return operatingSystem; }
+        
+        @Override
+        public String toString() {
+            return "Computer{" +
+                "processor='" + processor + '\'' +
+                ", ram=" + ram + "GB" +
+                ", storage=" + storage + "GB" +
+                ", graphicsCard=" + hasGraphicsCard +
+                ", bluetooth=" + hasBluetooth +
+                ", wifi=" + hasWifi +
+                ", OS='" + operatingSystem + '\'' +
+                '}';
+        }
+        
+        // Static Builder class
+        public static class ComputerBuilder {
+            // Required parameters
+            private final String processor;
+            private final int ram;
+            
+            // Optional parameters with default values
+            private int storage = 256;
+            private boolean hasGraphicsCard = false;
+            private boolean hasBluetooth = true;
+            private boolean hasWifi = true;
+            private String operatingSystem = "Windows";
+            
+            // Constructor with required parameters
+            public ComputerBuilder(String processor, int ram) {
+                this.processor = processor;
+                this.ram = ram;
+            }
+            
+            // Builder methods for optional parameters
+            public ComputerBuilder storage(int storage) {
+                this.storage = storage;
+                return this;
+            }
+            
+            public ComputerBuilder graphicsCard(boolean hasGraphicsCard) {
+                this.hasGraphicsCard = hasGraphicsCard;
+                return this;
+            }
+            
+            public ComputerBuilder bluetooth(boolean hasBluetooth) {
+                this.hasBluetooth = hasBluetooth;
+                return this;
+            }
+            
+            public ComputerBuilder wifi(boolean hasWifi) {
+                this.hasWifi = hasWifi;
+                return this;
+            }
+            
+            public ComputerBuilder operatingSystem(String operatingSystem) {
+                this.operatingSystem = operatingSystem;
+                return this;
+            }
+            
+            // Build method to create the final object
+            public Computer build() {
+                return new Computer(this);
+            }
+        }
+    }
+
+    public class BuilderPatternDemo {
+        public static void main(String[] args) {
+            // Building a gaming computer
+            Computer gamingPC = new Computer.ComputerBuilder("Intel i9", 32)
+                .storage(1000)
+                .graphicsCard(true)
+                .bluetooth(true)
+                .wifi(true)
+                .operatingSystem("Windows 11")
+                .build();
+            
+            System.out.println("Gaming PC: " + gamingPC);
+            
+            // Building a basic computer with defaults
+            Computer basicPC = new Computer.ComputerBuilder("Intel i3", 8)
+                .build();
+            
+            System.out.println("Basic PC: " + basicPC);
+            
+            // Building a Mac
+            Computer mac = new Computer.ComputerBuilder("Apple M2", 16)
+                .storage(512)
+                .operatingSystem("macOS")
+                .build();
+            
+            System.out.println("Mac: " + mac);
+        }
+    }
+    ```
+
+    **Benefits:**
+    - Readable code with method chaining (fluent interface)
+    - Immutable objects can be created easily
+    - Clear separation of construction and representation
+    - Avoids telescoping constructor anti-pattern
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+50. ### What is the difference between Heap and Stack memory?
+
+    Java memory is divided into two main areas: Heap and Stack. Understanding their differences is crucial for memory management.
+
+    | Stack Memory | Heap Memory |
+    |--------------|-------------|
+    | Stores method calls and local variables | Stores objects and instance variables |
+    | LIFO (Last In First Out) structure | No specific order |
+    | Thread-safe (each thread has own stack) | Shared among all threads |
+    | Memory allocation/deallocation is automatic | Managed by Garbage Collector |
+    | Fixed size (can cause StackOverflowError) | Dynamic size (can cause OutOfMemoryError) |
+    | Faster access | Slower access |
+    | Stores primitive values and references | Stores actual objects |
+
+    ```java
+    public class MemoryExample {
+        // Instance variable - stored in Heap
+        private int instanceVar = 10;
+        
+        // Static variable - stored in Method Area (part of Heap in modern JVMs)
+        private static int staticVar = 20;
+        
+        public void demonstrate() {
+            // Local primitive - stored in Stack
+            int localPrimitive = 30;
+            
+            // Local reference - reference in Stack, object in Heap
+            String localString = new String("Hello");
+            
+            // Object created in Heap
+            Person person = new Person("John", 25);
+            
+            // Array - reference in Stack, array object in Heap
+            int[] numbers = new int[5];
+        }
+        
+        public static void main(String[] args) {
+            // Reference 'obj' in Stack, object in Heap
+            MemoryExample obj = new MemoryExample();
+            obj.demonstrate();
+            
+            // Recursive call can cause StackOverflowError
+            // recursiveMethod(); // Uncomment to see StackOverflowError
+        }
+        
+        public static void recursiveMethod() {
+            recursiveMethod(); // Infinite recursion - StackOverflowError
+        }
+    }
+
+    class Person {
+        String name;  // Reference in Heap, String object in Heap
+        int age;      // Primitive stored in Heap (as part of object)
+        
+        Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+    }
+    ```
+
+    **Memory Visualization:**
+    ```
+    STACK                          HEAP
+    ┌─────────────────┐            ┌─────────────────────────────────┐
+    │ main() frame    │            │                                 │
+    │  obj (reference)│──────────► │  MemoryExample object           │
+    │                 │            │    instanceVar = 10             │
+    ├─────────────────┤            │                                 │
+    │ demonstrate()   │            ├─────────────────────────────────┤
+    │  localPrimitive │            │                                 │
+    │  = 30           │            │  String object "Hello"          │
+    │  localString ───│──────────► │                                 │
+    │  person ────────│──────────► │  Person object                  │
+    │  numbers ───────│──────────► │    name (ref) ──► "John"        │
+    └─────────────────┘            │    age = 25                     │
+                                   │                                 │
+                                   │  int[5] array                   │
+                                   └─────────────────────────────────┘
+    ```
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+51. ### What is garbage collection in Java?
+
+    Garbage Collection (GC) is an automatic memory management feature in Java that identifies and removes objects that are no longer in use, freeing up heap memory for new objects.
+
+    **How Garbage Collection Works:**
+
+    1. **Mark Phase:** GC identifies which objects are still reachable (in use)
+    2. **Sweep Phase:** GC removes unreachable objects
+    3. **Compact Phase (optional):** GC compacts remaining objects to reduce fragmentation
+
+    **When does an object become eligible for GC?**
+    - When no references point to it
+    - When reference is set to null
+    - When reference is reassigned
+    - When object goes out of scope
+
+    ```java
+    public class GarbageCollectionDemo {
+        
+        public static void main(String[] args) {
+            // Object created - not eligible for GC
+            Object obj1 = new Object();
+            
+            // Reference set to null - obj1's object eligible for GC
+            obj1 = null;
+            
+            // Object reassignment - first object eligible for GC
+            Object obj2 = new Object();
+            obj2 = new Object();  // First object now eligible for GC
+            
+            // Objects in method scope
+            createObjects();
+            // After method returns, local objects are eligible for GC
+            
+            // Request garbage collection (not guaranteed to run immediately)
+            System.gc();
+            // or
+            Runtime.getRuntime().gc();
+        }
+        
+        static void createObjects() {
+            Object localObj = new Object();
+            // localObj goes out of scope when method returns
+        }
+    }
+
+    // Using finalize() - deprecated but shows GC callback
+    class MyObject {
+        private String name;
+        
+        public MyObject(String name) {
+            this.name = name;
+            System.out.println(name + " created");
+        }
+        
+        @Override
+        protected void finalize() throws Throwable {
+            System.out.println(name + " is being garbage collected");
+            super.finalize();
+        }
+    }
+
+    // Demonstrating object eligibility
+    class GCEligibility {
+        public static void main(String[] args) throws InterruptedException {
+            // Island of isolation - objects reference each other but unreachable
+            MyObject a = new MyObject("A");
+            MyObject b = new MyObject("B");
+            
+            // Create circular reference
+            // a.partner = b;
+            // b.partner = a;
+            
+            // Both become eligible for GC (island of isolation)
+            a = null;
+            b = null;
+            
+            // Request GC
+            System.gc();
+            Thread.sleep(1000);  // Give GC time to run
+        }
+    }
+    ```
+
+    **JVM Heap Generations:**
+    ```
+    ┌────────────────────────────────────────────────────────────┐
+    │                          HEAP                              │
+    ├─────────────────────────────┬──────────────────────────────┤
+    │     Young Generation        │      Old Generation          │
+    │  ┌───────┬───────┬───────┐  │      (Tenured)               │
+    │  │ Eden  │  S0   │  S1   │  │                              │
+    │  │       │(From) │ (To)  │  │   Long-lived objects         │
+    │  │ New   │       │       │  │                              │
+    │  │objects│Survivor Spaces│  │                              │
+    │  └───────┴───────┴───────┘  │                              │
+    └─────────────────────────────┴──────────────────────────────┘
+    ```
+
+    **GC Process:**
+    1. New objects are allocated in Eden space
+    2. When Eden fills up, Minor GC occurs
+    3. Surviving objects move to Survivor space
+    4. Objects that survive multiple Minor GCs move to Old Generation
+    5. When Old Generation fills up, Major GC (Full GC) occurs
+
+    **JVM GC Options:**
+    ```bash
+    # Set heap size
+    java -Xms256m -Xmx1024m MyApp
+    
+    # Choose garbage collector
+    java -XX:+UseG1GC MyApp          # G1 Garbage Collector
+    java -XX:+UseParallelGC MyApp    # Parallel GC
+    java -XX:+UseZGC MyApp           # Z Garbage Collector (Java 11+)
+    
+    # GC logging
+    java -Xlog:gc* MyApp             # Java 9+
+    ```
+
+    **[⬆ Back to Top](#table-of-contents)**
+
 
 <!-- QUESTIONS_END -->
