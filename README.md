@@ -47,6 +47,27 @@ Frequently asked Java Interview questions
 | 38 | [What are functional interfaces in Java?](#what-are-functional-interfaces-in-java) |
 | 39 | [What are lambda expressions in Java?](#what-are-lambda-expressions-in-java) |
 | 40 | [What is Optional class in Java 8?](#what-is-optional-class-in-java-8) |
+| 41 | [What is the difference between Collection and Collections?](#what-is-the-difference-between-collection-and-collections) |
+| 42 | [What is the difference between Set and List?](#what-is-the-difference-between-set-and-list) |
+| 43 | [What is the difference between HashSet and TreeSet?](#what-is-the-difference-between-hashset-and-treeset) |
+| 44 | [What is the diamond problem in Java?](#what-is-the-diamond-problem-in-java) |
+| 45 | [What is dependency injection?](#what-is-dependency-injection) |
+| 46 | [What is the difference between shallow copy and deep copy?](#what-is-the-difference-between-shallow-copy-and-deep-copy) |
+| 47 | [What are design patterns in Java?](#what-are-design-patterns-in-java) |
+| 48 | [What is the factory design pattern?](#what-is-the-factory-design-pattern) |
+| 49 | [What is the builder design pattern?](#what-is-the-builder-design-pattern) |
+| 50 | [What is the difference between Heap and Stack memory?](#what-is-the-difference-between-heap-and-stack-memory) |
+| 51 | [What is garbage collection in Java?](#what-is-garbage-collection-in-java) |
+| 52 | [What are the different types of garbage collectors in Java?](#what-are-the-different-types-of-garbage-collectors-in-java) |
+| 53 | [What is the difference between wait() and sleep() methods?](#what-is-the-difference-between-wait-and-sleep-methods) |
+| 54 | [What is the difference between notify() and notifyAll()?](#what-is-the-difference-between-notify-and-notifyall) |
+| 55 | [What is an immutable class and how to create one?](#what-is-an-immutable-class-and-how-to-create-one) |
+| 56 | [What is the difference between String, StringBuilder, and StringBuffer?](#what-is-the-difference-between-string-stringbuilder-and-stringbuffer) |
+| 57 | [What is the difference between static and instance variables?](#what-is-the-difference-between-static-and-instance-variables) |
+| 58 | [What is the purpose of the super keyword?](#what-is-the-purpose-of-the-super-keyword) |
+| 59 | [What is the purpose of the this keyword?](#what-is-the-purpose-of-the-this-keyword) |
+| 60 | [What are generics in Java?](#what-are-generics-in-java) |
+| 61 | [What is type erasure in Java generics?](#what-is-type-erasure-in-java-generics) |
 <!-- TOC_END -->
 
 <!-- QUESTIONS_START -->
@@ -3248,6 +3269,1014 @@ Frequently asked Java Interview questions
     # GC logging
     java -Xlog:gc* MyApp             # Java 9+
     ```
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+52. ### What are the different types of garbage collectors in Java?
+
+    Java provides several garbage collector implementations, each optimized for different scenarios:
+
+    **1. Serial Garbage Collector (-XX:+UseSerialGC)**
+    - Uses single thread for garbage collection
+    - Best for single-threaded applications
+    - Causes "stop-the-world" pauses
+    - Suitable for small applications with small heaps
+
+    **2. Parallel Garbage Collector (-XX:+UseParallelGC)**
+    - Uses multiple threads for garbage collection
+    - Also known as "throughput collector"
+    - Default GC in Java 8
+    - Good for multi-threaded applications requiring high throughput
+
+    **3. G1 Garbage Collector (-XX:+UseG1GC)**
+    - Divides heap into regions
+    - Designed for large heaps (> 4GB)
+    - Default GC from Java 9 onwards
+    - Balances throughput and latency
+    - Predictable pause times
+
+    **4. Z Garbage Collector (-XX:+UseZGC)**
+    - Introduced in Java 11
+    - Ultra-low latency (< 10ms pause times)
+    - Handles heaps from 8MB to 16TB
+    - Concurrent garbage collection
+
+    **5. Shenandoah Garbage Collector (-XX:+UseShenandoahGC)**
+    - Low pause time garbage collector
+    - Performs concurrent compaction
+    - Available in OpenJDK
+
+    ```java
+    public class GCDemo {
+        public static void main(String[] args) {
+            // Check current garbage collector
+            java.lang.management.GarbageCollectorMXBean gc;
+            for (java.lang.management.GarbageCollectorMXBean bean : 
+                    java.lang.management.ManagementFactory.getGarbageCollectorMXBeans()) {
+                System.out.println("GC Name: " + bean.getName());
+                System.out.println("Collection Count: " + bean.getCollectionCount());
+                System.out.println("Collection Time: " + bean.getCollectionTime() + "ms");
+            }
+        }
+    }
+    ```
+
+    **JVM Options for GC:**
+    ```bash
+    # Serial GC
+    java -XX:+UseSerialGC -jar app.jar
+
+    # Parallel GC
+    java -XX:+UseParallelGC -XX:ParallelGCThreads=4 -jar app.jar
+
+    # G1 GC
+    java -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -jar app.jar
+
+    # ZGC
+    java -XX:+UseZGC -jar app.jar
+    ```
+
+    | GC Type | Best For | Pause Time | Throughput |
+    |---------|----------|------------|------------|
+    | Serial | Small apps | High | Low |
+    | Parallel | Throughput apps | Medium | High |
+    | G1 | Large heaps | Low-Medium | Medium-High |
+    | ZGC | Low latency | Very Low | Medium |
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+53. ### What is the difference between wait() and sleep() methods?
+
+    Both `wait()` and `sleep()` are used to pause thread execution, but they have significant differences:
+
+    | wait() | sleep() |
+    |--------|---------|
+    | Defined in Object class | Defined in Thread class |
+    | Releases the lock/monitor | Does not release the lock |
+    | Must be called from synchronized context | Can be called from anywhere |
+    | Can be woken up by notify()/notifyAll() | Cannot be woken up (except interrupt) |
+    | Used for inter-thread communication | Used for introducing delay |
+    | Instance method | Static method |
+
+    ```java
+    public class WaitVsSleep {
+        private static final Object lock = new Object();
+        
+        public static void main(String[] args) {
+            // Demonstrating sleep()
+            Thread sleepThread = new Thread(() -> {
+                System.out.println("Sleep thread starting...");
+                try {
+                    Thread.sleep(2000);  // Sleeps for 2 seconds
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Sleep thread woke up!");
+            });
+            
+            // Demonstrating wait()
+            Thread waitThread = new Thread(() -> {
+                synchronized (lock) {
+                    System.out.println("Wait thread starting...");
+                    try {
+                        lock.wait(2000);  // Waits for 2 seconds or until notified
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("Wait thread woke up!");
+                }
+            });
+            
+            // Notify thread
+            Thread notifyThread = new Thread(() -> {
+                try {
+                    Thread.sleep(1000);  // Wait 1 second
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                synchronized (lock) {
+                    System.out.println("Notifying...");
+                    lock.notify();  // Wakes up the waiting thread
+                }
+            });
+            
+            sleepThread.start();
+            waitThread.start();
+            notifyThread.start();
+        }
+    }
+    ```
+
+    **Key Points:**
+    - `wait()` is used for coordination between threads
+    - `sleep()` is used to pause execution for a specific time
+    - Always call `wait()` inside a synchronized block
+    - `wait()` can be interrupted by `notify()` before timeout
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+54. ### What is the difference between notify() and notifyAll()?
+
+    Both `notify()` and `notifyAll()` are methods in the Object class used to wake up threads waiting on an object's monitor.
+
+    | notify() | notifyAll() |
+    |----------|-------------|
+    | Wakes up only one waiting thread | Wakes up all waiting threads |
+    | Which thread is woken is not guaranteed | All threads compete for the lock |
+    | More efficient when only one thread needs to proceed | Safer when multiple threads may need the resource |
+    | Can cause thread starvation | No starvation, but more overhead |
+
+    ```java
+    public class NotifyVsNotifyAll {
+        private static final Object lock = new Object();
+        private static boolean resourceAvailable = false;
+        
+        public static void main(String[] args) throws InterruptedException {
+            // Create multiple waiting threads
+            for (int i = 1; i <= 3; i++) {
+                final int threadNum = i;
+                new Thread(() -> {
+                    synchronized (lock) {
+                        while (!resourceAvailable) {
+                            System.out.println("Thread " + threadNum + " waiting...");
+                            try {
+                                lock.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        System.out.println("Thread " + threadNum + " got the resource!");
+                    }
+                }).start();
+            }
+            
+            Thread.sleep(1000);  // Let all threads start waiting
+            
+            // Using notify() - wakes only ONE thread
+            synchronized (lock) {
+                System.out.println("\nCalling notify()...");
+                resourceAvailable = true;
+                lock.notify();  // Only one thread wakes up
+            }
+            
+            Thread.sleep(1000);
+            
+            // Reset and demonstrate notifyAll()
+            resourceAvailable = false;
+            
+            // Create more waiting threads
+            for (int i = 4; i <= 6; i++) {
+                final int threadNum = i;
+                new Thread(() -> {
+                    synchronized (lock) {
+                        while (!resourceAvailable) {
+                            System.out.println("Thread " + threadNum + " waiting...");
+                            try {
+                                lock.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        System.out.println("Thread " + threadNum + " got the resource!");
+                    }
+                }).start();
+            }
+            
+            Thread.sleep(1000);
+            
+            // Using notifyAll() - wakes ALL threads
+            synchronized (lock) {
+                System.out.println("\nCalling notifyAll()...");
+                resourceAvailable = true;
+                lock.notifyAll();  // All threads wake up
+            }
+        }
+    }
+    ```
+
+    **When to use:**
+    - Use `notify()` when only one thread can proceed (e.g., single resource)
+    - Use `notifyAll()` when multiple threads might be able to proceed or when condition varies
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+55. ### What is an immutable class and how to create one?
+
+    An immutable class is a class whose instances cannot be modified after creation. Once an object is created, its state remains constant throughout its lifetime.
+
+    **Benefits of Immutability:**
+    - Thread-safe without synchronization
+    - Can be safely shared and cached
+    - Good for hash keys (hashCode never changes)
+    - Easier to reason about
+
+    **Rules for Creating Immutable Class:**
+    1. Declare the class as `final`
+    2. Make all fields `private` and `final`
+    3. Don't provide setter methods
+    4. Initialize all fields via constructor
+    5. Perform deep copy for mutable objects
+    6. Return copies of mutable objects in getters
+
+    ```java
+    import java.util.ArrayList;
+    import java.util.Collections;
+    import java.util.List;
+
+    // Immutable class example
+    public final class ImmutablePerson {
+        private final String name;
+        private final int age;
+        private final List<String> hobbies;
+        
+        public ImmutablePerson(String name, int age, List<String> hobbies) {
+            this.name = name;
+            this.age = age;
+            // Deep copy of mutable object
+            this.hobbies = new ArrayList<>(hobbies);
+        }
+        
+        public String getName() {
+            return name;
+        }
+        
+        public int getAge() {
+            return age;
+        }
+        
+        // Return unmodifiable copy to prevent modification
+        public List<String> getHobbies() {
+            return Collections.unmodifiableList(hobbies);
+        }
+        
+        // Method that appears to modify but returns new instance
+        public ImmutablePerson withAge(int newAge) {
+            return new ImmutablePerson(this.name, newAge, this.hobbies);
+        }
+        
+        @Override
+        public String toString() {
+            return "ImmutablePerson{name='" + name + "', age=" + age + 
+                   ", hobbies=" + hobbies + "}";
+        }
+    }
+
+    // Usage
+    class ImmutableDemo {
+        public static void main(String[] args) {
+            List<String> hobbies = new ArrayList<>();
+            hobbies.add("Reading");
+            hobbies.add("Gaming");
+            
+            ImmutablePerson person = new ImmutablePerson("John", 25, hobbies);
+            System.out.println("Original: " + person);
+            
+            // Original list modification doesn't affect the object
+            hobbies.add("Cooking");
+            System.out.println("After modifying original list: " + person);
+            
+            // Cannot modify returned list
+            // person.getHobbies().add("Swimming"); // Throws UnsupportedOperationException
+            
+            // Create new instance with different age
+            ImmutablePerson olderPerson = person.withAge(30);
+            System.out.println("New person: " + olderPerson);
+            System.out.println("Original unchanged: " + person);
+        }
+    }
+    ```
+
+    **Java Record (Java 14+):**
+    ```java
+    // Records are immutable by default
+    public record Person(String name, int age) {
+        // Automatically generates constructor, getters, equals, hashCode, toString
+    }
+    ```
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+56. ### What is the difference between String, StringBuilder, and StringBuffer?
+
+    All three are used to handle strings in Java, but they have different characteristics:
+
+    | Feature | String | StringBuilder | StringBuffer |
+    |---------|--------|---------------|--------------|
+    | Mutability | Immutable | Mutable | Mutable |
+    | Thread Safety | Thread-safe (immutable) | Not thread-safe | Thread-safe (synchronized) |
+    | Performance | Slower for concatenation | Fastest | Slower than StringBuilder |
+    | Storage | String Pool | Heap | Heap |
+    | Since | Java 1.0 | Java 1.5 | Java 1.0 |
+
+    ```java
+    public class StringComparison {
+        public static void main(String[] args) {
+            // String - immutable
+            String str = "Hello";
+            str = str + " World";  // Creates new String object
+            System.out.println("String: " + str);
+            
+            // StringBuilder - mutable, not thread-safe
+            StringBuilder sb = new StringBuilder("Hello");
+            sb.append(" World");  // Modifies same object
+            System.out.println("StringBuilder: " + sb);
+            
+            // StringBuffer - mutable, thread-safe
+            StringBuffer sbuf = new StringBuffer("Hello");
+            sbuf.append(" World");  // Modifies same object
+            System.out.println("StringBuffer: " + sbuf);
+            
+            // Performance comparison
+            long startTime, endTime;
+            
+            // String concatenation (slow)
+            startTime = System.currentTimeMillis();
+            String s = "";
+            for (int i = 0; i < 100000; i++) {
+                s += "a";
+            }
+            endTime = System.currentTimeMillis();
+            System.out.println("String time: " + (endTime - startTime) + "ms");
+            
+            // StringBuilder (fast)
+            startTime = System.currentTimeMillis();
+            StringBuilder sb2 = new StringBuilder();
+            for (int i = 0; i < 100000; i++) {
+                sb2.append("a");
+            }
+            endTime = System.currentTimeMillis();
+            System.out.println("StringBuilder time: " + (endTime - startTime) + "ms");
+            
+            // StringBuffer (moderate)
+            startTime = System.currentTimeMillis();
+            StringBuffer sbuf2 = new StringBuffer();
+            for (int i = 0; i < 100000; i++) {
+                sbuf2.append("a");
+            }
+            endTime = System.currentTimeMillis();
+            System.out.println("StringBuffer time: " + (endTime - startTime) + "ms");
+        }
+    }
+    ```
+
+    **Common Methods (StringBuilder/StringBuffer):**
+    ```java
+    StringBuilder sb = new StringBuilder("Hello");
+    sb.append(" World");           // Append
+    sb.insert(5, ",");             // Insert at position
+    sb.delete(5, 6);               // Delete range
+    sb.reverse();                  // Reverse
+    sb.replace(0, 5, "Hi");        // Replace range
+    String result = sb.toString(); // Convert to String
+    ```
+
+    **When to use:**
+    - **String:** When string won't change much
+    - **StringBuilder:** When string changes frequently (single-threaded)
+    - **StringBuffer:** When string changes frequently (multi-threaded)
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+57. ### What is the difference between static and instance variables?
+
+    Static variables belong to the class, while instance variables belong to individual objects.
+
+    | Static Variable | Instance Variable |
+    |-----------------|-------------------|
+    | Belongs to class | Belongs to object |
+    | Single copy shared by all instances | Each instance has its own copy |
+    | Declared with `static` keyword | Declared without `static` keyword |
+    | Accessed via class name | Accessed via object reference |
+    | Memory allocated once when class loads | Memory allocated when object is created |
+    | Stored in Method Area | Stored in Heap |
+
+    ```java
+    public class Employee {
+        // Static variable - shared by all instances
+        private static int employeeCount = 0;
+        private static String companyName = "TechCorp";
+        
+        // Instance variables - unique to each instance
+        private int id;
+        private String name;
+        private double salary;
+        
+        public Employee(String name, double salary) {
+            this.name = name;
+            this.salary = salary;
+            this.id = ++employeeCount;  // Use static counter
+        }
+        
+        // Static method - can only access static members
+        public static int getEmployeeCount() {
+            return employeeCount;
+        }
+        
+        public static String getCompanyName() {
+            return companyName;
+        }
+        
+        // Instance method - can access both static and instance members
+        public void displayInfo() {
+            System.out.println("ID: " + id);
+            System.out.println("Name: " + name);
+            System.out.println("Salary: " + salary);
+            System.out.println("Company: " + companyName);  // Accessing static
+        }
+        
+        public static void main(String[] args) {
+            // Accessing static variable before creating any object
+            System.out.println("Company: " + Employee.companyName);
+            System.out.println("Initial count: " + Employee.getEmployeeCount());
+            
+            // Create instances
+            Employee emp1 = new Employee("John", 50000);
+            Employee emp2 = new Employee("Jane", 60000);
+            Employee emp3 = new Employee("Bob", 55000);
+            
+            // Each has unique instance variables
+            emp1.displayInfo();
+            System.out.println();
+            emp2.displayInfo();
+            
+            // Static variable is shared
+            System.out.println("\nTotal employees: " + Employee.getEmployeeCount());
+            
+            // Change static variable - affects all
+            Employee.companyName = "NewTechCorp";
+            System.out.println("\nAfter company name change:");
+            emp1.displayInfo();
+            emp2.displayInfo();
+        }
+    }
+    ```
+
+    **Static Block:**
+    ```java
+    class StaticDemo {
+        static int value;
+        
+        // Static block - executed once when class loads
+        static {
+            System.out.println("Static block executed");
+            value = 100;
+        }
+    }
+    ```
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+58. ### What is the purpose of the super keyword?
+
+    The `super` keyword in Java is used to refer to the immediate parent class. It has three main uses:
+
+    **1. Access Parent Class Variables:**
+    ```java
+    class Animal {
+        String name = "Animal";
+    }
+
+    class Dog extends Animal {
+        String name = "Dog";
+        
+        void displayNames() {
+            System.out.println("Child name: " + name);
+            System.out.println("Parent name: " + super.name);
+        }
+    }
+    ```
+
+    **2. Call Parent Class Methods:**
+    ```java
+    class Animal {
+        void eat() {
+            System.out.println("Animal is eating");
+        }
+    }
+
+    class Dog extends Animal {
+        @Override
+        void eat() {
+            super.eat();  // Call parent method first
+            System.out.println("Dog is eating dog food");
+        }
+    }
+    ```
+
+    **3. Call Parent Class Constructor:**
+    ```java
+    class Person {
+        String name;
+        int age;
+        
+        Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+    }
+
+    class Employee extends Person {
+        String department;
+        double salary;
+        
+        Employee(String name, int age, String department, double salary) {
+            super(name, age);  // Call parent constructor (must be first statement)
+            this.department = department;
+            this.salary = salary;
+        }
+    }
+    ```
+
+    **Complete Example:**
+    ```java
+    class Vehicle {
+        String brand = "Generic";
+        int maxSpeed = 100;
+        
+        Vehicle() {
+            System.out.println("Vehicle constructor");
+        }
+        
+        Vehicle(String brand, int maxSpeed) {
+            this.brand = brand;
+            this.maxSpeed = maxSpeed;
+            System.out.println("Vehicle parameterized constructor");
+        }
+        
+        void start() {
+            System.out.println("Vehicle starting...");
+        }
+        
+        void displayInfo() {
+            System.out.println("Brand: " + brand + ", Max Speed: " + maxSpeed);
+        }
+    }
+
+    class Car extends Vehicle {
+        String brand = "Car Brand";  // Hides parent variable
+        int numDoors;
+        
+        Car(String brand, int maxSpeed, int numDoors) {
+            super(brand, maxSpeed);  // Call parent constructor
+            this.numDoors = numDoors;
+            System.out.println("Car constructor");
+        }
+        
+        @Override
+        void start() {
+            super.start();  // Call parent method
+            System.out.println("Car engine started!");
+        }
+        
+        void showBrands() {
+            System.out.println("Car brand field: " + brand);
+            System.out.println("Parent brand field: " + super.brand);
+        }
+    }
+
+    public class SuperDemo {
+        public static void main(String[] args) {
+            Car car = new Car("Toyota", 200, 4);
+            car.start();
+            car.showBrands();
+            car.displayInfo();
+        }
+    }
+    ```
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+59. ### What is the purpose of the this keyword?
+
+    The `this` keyword in Java refers to the current object instance. It has several uses:
+
+    **1. Distinguish Instance Variables from Parameters:**
+    ```java
+    class Person {
+        String name;
+        int age;
+        
+        Person(String name, int age) {
+            this.name = name;  // this.name refers to instance variable
+            this.age = age;    // age (right) is the parameter
+        }
+    }
+    ```
+
+    **2. Call Another Constructor (Constructor Chaining):**
+    ```java
+    class Employee {
+        String name;
+        int age;
+        String department;
+        
+        Employee() {
+            this("Unknown", 0, "General");  // Call parameterized constructor
+        }
+        
+        Employee(String name) {
+            this(name, 0, "General");
+        }
+        
+        Employee(String name, int age, String department) {
+            this.name = name;
+            this.age = age;
+            this.department = department;
+        }
+    }
+    ```
+
+    **3. Pass Current Object as Parameter:**
+    ```java
+    class Calculator {
+        int value;
+        
+        Calculator(int value) {
+            this.value = value;
+        }
+        
+        void display(Calculator calc) {
+            System.out.println("Value: " + calc.value);
+        }
+        
+        void show() {
+            display(this);  // Pass current object
+        }
+    }
+    ```
+
+    **4. Return Current Object (Method Chaining/Fluent Interface):**
+    ```java
+    class Builder {
+        private String name;
+        private int age;
+        private String email;
+        
+        Builder setName(String name) {
+            this.name = name;
+            return this;  // Return current object for chaining
+        }
+        
+        Builder setAge(int age) {
+            this.age = age;
+            return this;
+        }
+        
+        Builder setEmail(String email) {
+            this.email = email;
+            return this;
+        }
+        
+        void build() {
+            System.out.println("Name: " + name + ", Age: " + age + ", Email: " + email);
+        }
+    }
+
+    // Usage with method chaining
+    class ThisDemo {
+        public static void main(String[] args) {
+            new Builder()
+                .setName("John")
+                .setAge(25)
+                .setEmail("john@example.com")
+                .build();
+        }
+    }
+    ```
+
+    **5. Reference Current Class Instance in Inner Class:**
+    ```java
+    class Outer {
+        int value = 10;
+        
+        class Inner {
+            int value = 20;
+            
+            void display() {
+                int value = 30;
+                System.out.println("Local: " + value);
+                System.out.println("Inner: " + this.value);
+                System.out.println("Outer: " + Outer.this.value);
+            }
+        }
+    }
+    ```
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+60. ### What are generics in Java?
+
+    Generics enable types (classes and interfaces) to be parameters when defining classes, interfaces, and methods. They provide compile-time type safety and eliminate the need for casting.
+
+    **Benefits of Generics:**
+    - Type safety at compile time
+    - Elimination of casts
+    - Code reusability
+    - Enable generic algorithms
+
+    **Generic Class:**
+    ```java
+    // Generic class with type parameter T
+    class Box<T> {
+        private T content;
+        
+        public void set(T content) {
+            this.content = content;
+        }
+        
+        public T get() {
+            return content;
+        }
+    }
+
+    // Multiple type parameters
+    class Pair<K, V> {
+        private K key;
+        private V value;
+        
+        public Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+        
+        public K getKey() { return key; }
+        public V getValue() { return value; }
+    }
+    ```
+
+    **Generic Method:**
+    ```java
+    class Utilities {
+        // Generic method
+        public static <T> void printArray(T[] array) {
+            for (T element : array) {
+                System.out.print(element + " ");
+            }
+            System.out.println();
+        }
+        
+        // Generic method with return type
+        public static <T> T getFirst(List<T> list) {
+            return list.isEmpty() ? null : list.get(0);
+        }
+        
+        // Multiple type parameters
+        public static <K, V> V getValue(Map<K, V> map, K key) {
+            return map.get(key);
+        }
+    }
+    ```
+
+    **Bounded Type Parameters:**
+    ```java
+    // Upper bound - T must extend Number
+    class NumberBox<T extends Number> {
+        private T number;
+        
+        public NumberBox(T number) {
+            this.number = number;
+        }
+        
+        public double doubleValue() {
+            return number.doubleValue();
+        }
+    }
+
+    // Multiple bounds
+    class MultiBound<T extends Number & Comparable<T>> {
+        private T value;
+        
+        public int compareTo(T other) {
+            return value.compareTo(other);
+        }
+    }
+    ```
+
+    **Wildcards:**
+    ```java
+    class WildcardDemo {
+        // Unbounded wildcard
+        public static void printList(List<?> list) {
+            for (Object item : list) {
+                System.out.println(item);
+            }
+        }
+        
+        // Upper bounded wildcard (read-only)
+        public static double sumNumbers(List<? extends Number> list) {
+            double sum = 0;
+            for (Number n : list) {
+                sum += n.doubleValue();
+            }
+            return sum;
+        }
+        
+        // Lower bounded wildcard (write-only)
+        public static void addIntegers(List<? super Integer> list) {
+            list.add(1);
+            list.add(2);
+            list.add(3);
+        }
+    }
+    ```
+
+    **Usage Example:**
+    ```java
+    public class GenericsDemo {
+        public static void main(String[] args) {
+            // Generic class usage
+            Box<String> stringBox = new Box<>();
+            stringBox.set("Hello");
+            String str = stringBox.get();  // No cast needed
+            
+            Box<Integer> intBox = new Box<>();
+            intBox.set(100);
+            int num = intBox.get();
+            
+            // Pair
+            Pair<String, Integer> pair = new Pair<>("Age", 25);
+            System.out.println(pair.getKey() + ": " + pair.getValue());
+            
+            // Generic method
+            Integer[] intArray = {1, 2, 3, 4, 5};
+            String[] strArray = {"A", "B", "C"};
+            Utilities.printArray(intArray);
+            Utilities.printArray(strArray);
+            
+            // Bounded type
+            NumberBox<Integer> numBox = new NumberBox<>(42);
+            System.out.println("Double value: " + numBox.doubleValue());
+        }
+    }
+    ```
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+61. ### What is type erasure in Java generics?
+
+    Type erasure is the process by which the Java compiler removes all generic type information during compilation. Generic type parameters are replaced with their bounds or Object, and type casts are inserted where necessary.
+
+    **How Type Erasure Works:**
+
+    ```java
+    // Before compilation (source code)
+    public class Box<T> {
+        private T content;
+        
+        public void set(T content) {
+            this.content = content;
+        }
+        
+        public T get() {
+            return content;
+        }
+    }
+
+    // After type erasure (bytecode equivalent)
+    public class Box {
+        private Object content;
+        
+        public void set(Object content) {
+            this.content = content;
+        }
+        
+        public Object get() {
+            return content;
+        }
+    }
+    ```
+
+    **Bounded Type Erasure:**
+    ```java
+    // Before erasure
+    public class NumberBox<T extends Number> {
+        private T number;
+        
+        public double getValue() {
+            return number.doubleValue();
+        }
+    }
+
+    // After erasure - T replaced with Number (its bound)
+    public class NumberBox {
+        private Number number;
+        
+        public double getValue() {
+            return number.doubleValue();
+        }
+    }
+    ```
+
+    **Bridge Methods:**
+    The compiler generates bridge methods to preserve polymorphism:
+
+    ```java
+    class Node<T> {
+        public T data;
+        
+        public void setData(T data) {
+            this.data = data;
+        }
+    }
+
+    class IntegerNode extends Node<Integer> {
+        @Override
+        public void setData(Integer data) {
+            System.out.println("IntegerNode.setData");
+            super.setData(data);
+        }
+    }
+
+    // Compiler generates bridge method:
+    // public void setData(Object data) {
+    //     setData((Integer) data);  // Calls the actual method
+    // }
+    ```
+
+    **Implications of Type Erasure:**
+
+    ```java
+    public class TypeErasureDemo {
+        public static void main(String[] args) {
+            // 1. Cannot create instances of type parameters
+            // T obj = new T();  // Compile error
+            
+            // 2. Cannot create arrays of parameterized types
+            // List<String>[] array = new List<String>[10];  // Compile error
+            List<?>[] array = new List<?>[10];  // OK with wildcard
+            
+            // 3. Cannot use instanceof with parameterized types
+            List<String> list = new ArrayList<>();
+            // if (list instanceof ArrayList<String>) {}  // Compile error
+            if (list instanceof ArrayList<?>) {}  // OK with wildcard
+            
+            // 4. Runtime type is same regardless of type parameter
+            List<String> stringList = new ArrayList<>();
+            List<Integer> intList = new ArrayList<>();
+            System.out.println(stringList.getClass() == intList.getClass());  // true
+            
+            // 5. Cannot overload methods that have same erasure
+            // void process(List<String> list) {}
+            // void process(List<Integer> list) {}  // Compile error - same erasure
+        }
+        
+        // Workaround: Use Class<T> for runtime type information
+        public static <T> T createInstance(Class<T> clazz) throws Exception {
+            return clazz.getDeclaredConstructor().newInstance();
+        }
+    }
+    ```
+
+    **Why Type Erasure?**
+    - Backward compatibility with pre-generics code
+    - No need for new bytecode instructions
+    - Reduced memory footprint (no runtime type info)
+
+    **Limitations:**
+    - Cannot determine generic type at runtime
+    - Cannot create generic arrays
+    - Cannot use primitives as type parameters
+    - Cannot catch or throw generic exceptions
 
     **[⬆ Back to Top](#table-of-contents)**
 
