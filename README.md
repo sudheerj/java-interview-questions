@@ -822,7 +822,7 @@ Frequently asked Java Interview questions
    **Example:**
 
    ```java
-    public class FinalExample {
+   public class FinalExample {
        final int VALUE = 100;
 
        public final void display() {
@@ -841,8 +841,11 @@ Frequently asked Java Interview questions
        protected void finalize() throws Throwable {
            System.out.println("Finalize method called");
        }
-    } ```
-   
+   }
+   ```
+
+   **[⬆ Back to Top](#table-of-contents)**
+
 21. ### What is the difference between '==' and equals() method?
     
     Both **==** and **.equals()** methods are used to compare objects, but they work in different ways:
