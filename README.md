@@ -278,8 +278,15 @@ Frequently asked Java Interview questions
    **[⬆ Back to Top](#table-of-contents)**
 
 7. ### Why strings are immutable
+    In Java, the String class is **immutable**, meaning once a String object is created, its value cannot be changed. If you try to modify it (for example, by concatenating text), Java creates a new String object instead of altering the original one. Due to this behavior, the internal state of a string remains the same throughout the execution of the program.
 
-   Strings are immutable, that means the contents of string objects can't be modified after their creation. i.e, When you try to alter the string, it creates a new string. Due to this behavior, the internal state of a string remains the same throughout the execution of the program. This characteristic of immutability helps with the benefits of caching, security, synchronization, and performance.
+    One major reason for this is **security**. Strings are used for sensitive data like file paths, database URLs, and class names. If strings were mutable, their values could be changed after validation, leading to security risks. Immutability ensures the value remains safe once created.
+
+    Another reason is the **String Constant Pool**, where identical string literals share the same memory. This saves memory and improves performance. Since strings are immutable, multiple references can safely point to the same object without affecting each other.
+
+    Immutability also provides **thread safety**. Multiple threads can use the same String object without synchronization because its value cannot change. Additionally, strings are commonly used as keys in hash-based collections, and immutability ensures their hash codes remain consistent.
+
+    In summary, String is immutable in Java for security, memory efficiency, thread safety, and reliable behavior in collections.
 
    **[⬆ Back to Top](#table-of-contents)**
 
@@ -318,15 +325,15 @@ Frequently asked Java Interview questions
 
    **2. hashCode:** The `hashCode()` method returns the integer hash code value of the object. This method must be overridden in every class which overrides `equals()` method. The general contract of hashCode is:
 
-   1. While execution of the application, the multiple invocations of `hashCode()` on the object should return the same integer value, unless the object property used in the `equals()` method is being modified.
-   2. During the multiple executions of the application, the object's hashCode can change.
-   3. If two objects are equal based on `equals()` method, then their object's hash code must be same.
-   4. If two objects are unequal based on `equals()` method, their hash code value may or may not be equal.
+   5. While execution of the application, the multiple invocations of `hashCode()` on the object should return the same integer value, unless the object property used in the `equals()` method is being modified.
+   6. During the multiple executions of the application, the object's hashCode can change.
+   7. If two objects are equal based on `equals()` method, then their object's hash code must be same.
+   8. If two objects are unequal based on `equals()` method, their hash code value may or may not be equal.
 
    Together, the implementation of `equals()` and `hashCode()` should follow these rules.
 
-   1. If `x.equals(y)` is true, then `x.hashCode() === y.hashCode()` should always be true.
-   2. If `x.hashCode() === y.hashCode()` is true, then it doesn't required to be `x.equals(y)` always true.
+   9. If `x.equals(y)` is true, then `x.hashCode() === y.hashCode()` should always be true.
+   10. If `x.hashCode() === y.hashCode()` is true, then it doesn't required to be `x.equals(y)` always true.
 
    **[⬆ Back to Top](#table-of-contents)**
 
@@ -345,8 +352,8 @@ Frequently asked Java Interview questions
 
     Some of the common checked exceptions are,
 
-    1. IOException
-    2. FileNotFoundException
+    3. IOException
+    4. FileNotFoundException
     3. ClassNotFoundException
     4. InterruptedException
     5. SQLException
@@ -380,11 +387,11 @@ Frequently asked Java Interview questions
 
     Some of the common unchecked exceptions are,
 
-    1. NullPointerException
-    2. ArrayIndexOutOfBoundsException
-    3. ArithmeticException
-    4. NumberFormatException
-    5. IllegalThreadStateException
+    7. NullPointerException
+    8. ArrayIndexOutOfBoundsException
+    9. ArithmeticException
+    10. NumberFormatException
+    11. IllegalThreadStateException
 
     For example, the following method doesn't have any errors during compile time. But it will throw `ArithmeticException` during runtime because of division by zero.
 
@@ -536,8 +543,8 @@ Frequently asked Java Interview questions
 
     There are also alternatives for marker interfaces.
 
-    1. **Internal flags:** They can be used in place of marker interface to indicate any specific operation.
-    2. **Annotations:** They are used as tags to represent the metadata attached to classes, interfaces, or methods to indicate additional information required by JVM.
+    4. **Internal flags:** They can be used in place of marker interface to indicate any specific operation.
+    5. **Annotations:** They are used as tags to represent the metadata attached to classes, interfaces, or methods to indicate additional information required by JVM.
 
     **[⬆ Back to Top](#table-of-contents)**
 
