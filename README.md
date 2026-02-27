@@ -68,6 +68,7 @@ Frequently asked Java Interview questions
 | 59 | [What is the purpose of the this keyword?](#what-is-the-purpose-of-the-this-keyword) |
 | 60 | [What are generics in Java?](#what-are-generics-in-java) |
 | 61 | [What is type erasure in Java generics?](#what-is-type-erasure-in-java-generics) |
+| 62 | [Can you override a private or static method?](#can-you-override-a-private-or-static-method) |
 <!-- TOC_END -->
 
 <!-- QUESTIONS_START -->
@@ -491,7 +492,7 @@ Frequently asked Java Interview questions
 
 14. ### What are marker interfaces
 
-    Marker interfaces are interfaces that don't have any fields, methods, or constants inside of it. They are also known as empty interfaces or tag interfaces. Examples of marker interface are Serializable, Cloneable and Remote interface. The purpose of marker interfaces are to provide run-time type information about an object to JVM and Compiler. They are mainly used in API development and in frameworks like Spring to provide additional information to the class.
+    Marker interfaces are interfaces that don't have any fields, methods, or constants inside of it. They are also known as **empty interfaces** or **tag interfaces**. Examples of marker interface are Serializable, Cloneable and Remote interface. The purpose of marker interfaces are to provide run-time type information about an object to JVM and Compiler. They are mainly used in API development and in frameworks like Spring to provide additional information to the class.
 
     Some of the commonly used built-in marker interfaces are:
 
@@ -4287,6 +4288,144 @@ Frequently asked Java Interview questions
     - Cannot create generic arrays
     - Cannot use primitives as type parameters
     - Cannot catch or throw generic exceptions
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+62. ### Can you override a private or static method?
+
+    **Short Answer:** No, you cannot override private or static methods in Java. These methods are not subject to polymorphism.
+
+    **Detailed Explanation:**
+
+    **1. Private Methods - Cannot Override:**
+
+    Private methods are not inherited by subclasses and therefore cannot be overridden. Since private members have class-level scope, they are not accessible in child classes.
+
+    ```java
+    class Parent {
+        private void display() {
+            System.out.println("Parent's private display");
+        }
+    }
+
+    class Child extends Parent {
+        // This is NOT an override - it's a new method in Child class
+        public void display() {
+            System.out.println("Child's display");
+        }
+    }
+
+    public class Test {
+        public static void main(String[] args) {
+            Parent parent = new Child();
+            parent.display();  // Calls Parent's private display (not accessible here - compile error)
+            
+            Child child = new Child();
+            child.display();   // Calls Child's display method
+        }
+    }
+    ```
+
+    In this example, `display()` in the Child class is a completely new method, not an override. This is called "method hiding" or "shadowing" at the compile level.
+
+    **Key Points about Private Methods:**
+    - Private methods have class-level scope and are not visible outside the class
+    - They cannot be inherited by subclasses
+    - You can define a method with the same signature in the child class, but it's a new method, not an override
+    - The @Override annotation would cause a compile error if used on a private method that shadows a parent's private method
+
+    **2. Static Methods - Cannot Override (Method Hiding Instead):**
+
+    Static methods belong to the class, not to instances. They cannot be overridden, but they can be "hidden" (redefined) in subclasses. When you call a static method on a reference, it's resolved at compile-time based on the reference type, not the runtime type.
+
+    ```java
+    class Parent {
+        static void staticDisplay() {
+            System.out.println("Parent's static display");
+        }
+    }
+
+    class Child extends Parent {
+        // This is method hiding, not overriding
+        static void staticDisplay() {
+            System.out.println("Child's static display");
+        }
+    }
+
+    public class Test {
+        public static void main(String[] args) {
+            Parent parent = new Child();
+            parent.staticDisplay();  // Calls Parent's staticDisplay (resolved at compile-time)
+            
+            Child child = new Child();
+            child.staticDisplay();   // Calls Child's staticDisplay
+            
+            Parent.staticDisplay();  // Calls Parent's staticDisplay
+            Child.staticDisplay();   // Calls Child's staticDisplay
+        }
+    }
+    ```
+
+    Output:
+    ```
+    Parent's static display
+    Child's static display
+    Parent's static display
+    Child's static display
+    ```
+
+    Notice that even though `parent` refers to a `Child` object, calling `parent.staticDisplay()` invokes the Parent's version because static method resolution happens at compile-time based on the reference type.
+
+    **Key Points about Static Methods:**
+    - Static methods are resolved at compile-time based on the reference type
+    - Static methods are not polymorphic
+    - When a child class has a static method with the same signature as the parent, it "hides" the parent's method
+    - This is different from overriding because the determination of which method to call is made at compile-time, not runtime
+
+    **3. Comparison with Public/Protected Instance Methods:**
+
+    ```java
+    class Parent {
+        public void instanceMethod() {
+            System.out.println("Parent's instance method");
+        }
+    }
+
+    class Child extends Parent {
+        @Override  // This annotation works correctly
+        public void instanceMethod() {
+            System.out.println("Child's instance method");
+        }
+    }
+
+    public class Test {
+        public static void main(String[] args) {
+            Parent parent = new Child();
+            parent.instanceMethod();  // Calls Child's instanceMethod (resolved at runtime)
+        }
+    }
+    ```
+
+    Output:
+    ```
+    Child's instance method
+    ```
+
+    Here, the method is resolved at runtime based on the actual object type (Child), demonstrating true overriding with polymorphism.
+
+    **4. Why This Design?**
+
+    - **Private Methods:** Since they have class scope, inheritance doesn't apply. They're implementation details of a class.
+    - **Static Methods:** Since they belong to the class (not to instances), they don't participate in polymorphic behavior, which is based on instance types.
+
+    **Table Summary:**
+
+    | Method Type | Can Override? | Resolution Time | Behavior |
+    |---|---|---|---|
+    | Public Instance | Yes | Runtime (Polymorphic) | Method overriding with dynamic dispatch |
+    | Protected Instance | Yes | Runtime (Polymorphic) | Method overriding with dynamic dispatch |
+    | Private | No | Compile-time | Method hiding; new method in child class |
+    | Static | No | Compile-time | Method hiding; resolved based on reference type |
 
     **[⬆ Back to Top](#table-of-contents)**
 
