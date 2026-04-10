@@ -69,6 +69,7 @@ Frequently asked Java Interview questions
 | 60 | [What are generics in Java?](#what-are-generics-in-java) |
 | 61 | [What is type erasure in Java generics?](#what-is-type-erasure-in-java-generics) |
 | 62 | [Can you override a private or static method?](#can-you-override-a-private-or-static-method) |
+| 63 | [What are common pitfalls with equals() and hashCode() methods?](#what-are-common-pitfalls-with-equals-and-hashcode-methods) |
 <!-- TOC_END -->
 
 <!-- QUESTIONS_START -->
@@ -4297,7 +4298,7 @@ Frequently asked Java Interview questions
 
 62. ### Can you override a private or static method?
 
-    **Short Answer:** No, you cannot override private or static methods in Java. These methods are not subject to polymorphism.
+    No, you cannot override private or static methods in Java. These methods are not subject to polymorphism.
 
     **Detailed Explanation:**
 
@@ -4430,6 +4431,265 @@ Frequently asked Java Interview questions
     | Protected Instance | Yes | Runtime (Polymorphic) | Method overriding with dynamic dispatch |
     | Private | No | Compile-time | Method hiding; new method in child class |
     | Static | No | Compile-time | Method hiding; resolved based on reference type |
+
+    **[⬆ Back to Top](#table-of-contents)**
+
+63. ### What are common pitfalls with equals() and hashCode() methods?
+
+    The `equals()` and `hashCode()` methods are fundamental to how Java handles object comparison and hash-based collections. Incorrectly implementing them leads to subtle and hard-to-debug issues. Below are the most common pitfalls:
+
+    **1. Overriding equals() without overriding hashCode()**
+
+    This is the most common mistake. The **contract** states: if two objects are equal according to `equals()`, they **must** have the same `hashCode()`. Violating this breaks hash-based collections like `HashMap`, `HashSet`, and `Hashtable`.
+
+    ```java
+    public class Employee {
+        private int id;
+        private String name;
+
+        public Employee(int id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            Employee other = (Employee) obj;
+            return id == other.id && Objects.equals(name, other.name);
+        }
+
+        // hashCode() is NOT overridden!
+    }
+
+    public class Test {
+        public static void main(String[] args) {
+            Employee e1 = new Employee(1, "John");
+            Employee e2 = new Employee(1, "John");
+
+            System.out.println(e1.equals(e2)); // true
+
+            Set<Employee> set = new HashSet<>();
+            set.add(e1);
+            set.add(e2);
+            System.out.println(set.size()); // 2 (Expected 1, since they are "equal")
+
+            Map<Employee, String> map = new HashMap<>();
+            map.put(e1, "Developer");
+            System.out.println(map.get(e2)); // null (Expected "Developer")
+        }
+    }
+    ```
+
+    Since `hashCode()` is not overridden, `e1` and `e2` get different hash codes (from `Object.hashCode()`), so the `HashSet` treats them as different objects and `HashMap` cannot find the value using `e2`.
+
+    **2. Using mutable fields in hashCode()**
+
+    If mutable fields used in `hashCode()` are modified after the object is placed in a hash-based collection, the object becomes "lost" — it can no longer be found because its hash bucket has changed.
+
+    ```java
+    public class Employee {
+        private int id;
+        private String name;
+
+        public Employee(int id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            Employee other = (Employee) obj;
+            return id == other.id && Objects.equals(name, other.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, name);
+        }
+    }
+
+    public class Test {
+        public static void main(String[] args) {
+            Employee e1 = new Employee(1, "John");
+
+            Set<Employee> set = new HashSet<>();
+            set.add(e1);
+
+            System.out.println(set.contains(e1)); // true
+
+            e1.setName("Jane"); // Mutating a field used in hashCode()
+
+            System.out.println(set.contains(e1)); // false! Object is "lost"
+            System.out.println(set.size());        // 1 (still in the set, but unreachable)
+        }
+    }
+    ```
+
+    **3. Using instanceof instead of getClass() (breaking symmetry in inheritance)**
+
+    Using `instanceof` in `equals()` can break the **symmetry contract** (`a.equals(b)` must equal `b.equals(a)`) when subclasses are involved.
+
+    ```java
+    public class Animal {
+        private String name;
+
+        public Animal(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof Animal) { // Uses instanceof
+                return name.equals(((Animal) obj).name);
+            }
+            return false;
+        }
+    }
+
+    public class Dog extends Animal {
+        private String breed;
+
+        public Dog(String name, String breed) {
+            super(name);
+            this.breed = breed;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof Dog) { // Uses instanceof
+                Dog other = (Dog) obj;
+                return super.equals(other) && breed.equals(other.breed);
+            }
+            return false;
+        }
+    }
+
+    public class Test {
+        public static void main(String[] args) {
+            Animal a = new Animal("Buddy");
+            Dog d = new Dog("Buddy", "Labrador");
+
+            System.out.println(a.equals(d)); // true  (Dog is an instance of Animal)
+            System.out.println(d.equals(a)); // false (Animal is NOT an instance of Dog)
+            // Symmetry is broken!
+        }
+    }
+    ```
+
+    Use `getClass()` comparison instead to ensure both objects are of the exact same type.
+
+    **4. Not handling null and self-comparison in equals()**
+
+    Forgetting to handle `null` check leads to `NullPointerException`, and skipping the self-reference check (`this == obj`) misses an easy optimization.
+
+    ```java
+    // Incorrect implementation
+    @Override
+    public boolean equals(Object obj) {
+        Employee other = (Employee) obj; // Crashes if obj is null!
+        return id == other.id && name.equals(other.name);
+    }
+
+    // Correct implementation
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;                              // Self-check
+        if (obj == null || getClass() != obj.getClass()) return false; // Null & type check
+        Employee other = (Employee) obj;
+        return id == other.id && Objects.equals(name, other.name); // Null-safe comparison
+    }
+    ```
+
+    **5. Using equals(ClassName obj) instead of equals(Object obj) — overloading instead of overriding**
+
+    A very common mistake is changing the parameter type from `Object` to a specific class. This **overloads** `equals()` instead of **overriding** it, so polymorphic calls (e.g., from collections) still use `Object.equals()`.
+
+    ```java
+    public class Employee {
+        private int id;
+
+        public Employee(int id) {
+            this.id = id;
+        }
+
+        // This is OVERLOADING, not overriding!
+        public boolean equals(Employee other) {
+            return this.id == other.id;
+        }
+    }
+
+    public class Test {
+        public static void main(String[] args) {
+            Employee e1 = new Employee(1);
+            Employee e2 = new Employee(1);
+
+            System.out.println(e1.equals(e2)); // true (calls overloaded method)
+
+            Object obj = new Employee(1);
+            System.out.println(e1.equals(obj)); // false! (calls Object.equals, uses reference comparison)
+
+            Set<Employee> set = new HashSet<>();
+            set.add(e1);
+            set.add(e2);
+            System.out.println(set.size()); // 2 (Expected 1)
+        }
+    }
+    ```
+
+    Always use `@Override` annotation to let the compiler catch this mistake.
+
+    **6. Inconsistent equals() and hashCode() — using different fields**
+
+    The fields used in `equals()` and `hashCode()` must be consistent. If `equals()` uses `id` and `name` but `hashCode()` only uses `id`, two objects that differ only in `name` will have the same hash code but won't be equal — this is allowed but causes performance degradation due to hash collisions. The opposite (more fields in `hashCode()` than `equals()`) **breaks the contract**.
+
+    ```java
+    public class Employee {
+        private int id;
+        private String name;
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            Employee other = (Employee) obj;
+            return id == other.id; // Only uses id
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, name); // Uses id AND name — BROKEN!
+        }
+    }
+
+    public class Test {
+        public static void main(String[] args) {
+            Employee e1 = new Employee(1, "John");
+            Employee e2 = new Employee(1, "Jane");
+
+            System.out.println(e1.equals(e2)); // true (same id)
+            System.out.println(e1.hashCode() == e2.hashCode()); // false! Contract violated
+        }
+    }
+    ```
+
+    **Best Practices Summary:**
+
+    | Pitfall | Consequence | Fix |
+    |---|---|---|
+    | Override `equals()` without `hashCode()` | Hash-based collections break | Always override both together |
+    | Mutable fields in `hashCode()` | Objects become unreachable in collections | Use only immutable fields |
+    | `instanceof` in `equals()` with inheritance | Breaks symmetry contract | Use `getClass()` comparison |
+    | Missing null/self checks | `NullPointerException` or poor performance | Always add null and self checks |
+    | Overloading instead of overriding `equals()` | Collections use `Object.equals()` | Use `equals(Object obj)` with `@Override` |
+    | Inconsistent fields in `equals()` and `hashCode()` | Violates the equals-hashCode contract | Use the same fields in both methods |
 
     **[⬆ Back to Top](#table-of-contents)**
 
